@@ -175,5 +175,10 @@ namespace TugasBesarPBO
                 return Convert.ToBase64String(hashedBytes);
             }
         }
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

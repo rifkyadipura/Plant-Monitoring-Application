@@ -122,7 +122,7 @@ namespace TugasBesarPBO
                 MessageBox.Show("Login berhasil!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Arahkan ke Form3
-                Form3 formDashboard = new Form3();
+                Form3 formDashboard = new Form3(username); // Kirim username
                 formDashboard.Show();
                 this.Hide();
             }
