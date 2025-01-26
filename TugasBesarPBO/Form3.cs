@@ -47,11 +47,6 @@ namespace TugasBesarPBO
 
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void Form3_Load(object sender, EventArgs e)
         {
 
@@ -59,7 +54,7 @@ namespace TugasBesarPBO
 
         private void btnDasboard_Click(object sender, EventArgs e)
         {
-
+            this.Refresh();
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -91,11 +86,11 @@ namespace TugasBesarPBO
                 string keterangan = Tbketerangan.Text;
                 DateTime tanggal = datetanggal.Value;
                 string tinggitomat = Tbtinggi.Text;
-             string jadwalsiram = Tbjadwalsiram.Text;
-             string jadwalpupuk = Tbjadwalpupuk.Text;
+                string jadwalsiram = Tbjadwalsiram.Text;
+                string jadwalpupuk = Tbjadwalpupuk.Text;
 
                 // Buat dokumen BSON untuk disimpan ke MongoDB
-                var Datatomat= new BsonDocument
+                var Datatomat = new BsonDocument
                 {
                     { "keterangan", keterangan },
                     { "tanggal", tanggal },
@@ -133,6 +128,13 @@ namespace TugasBesarPBO
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void btnSchedule_Click(object sender, EventArgs e)
+        {
+            Form4 form4 = new Form4(username);
+            form4.Show();
+            this.Hide();
         }
     }
 }

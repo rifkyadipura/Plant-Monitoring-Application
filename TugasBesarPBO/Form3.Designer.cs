@@ -30,13 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form3));
             panel1 = new Panel();
+            btnSchedule = new Button();
+            panel3 = new Panel();
             btnLogout = new Button();
             button3 = new Button();
             button2 = new Button();
-            button1 = new Button();
             btnDasboard = new Button();
             panel2 = new Panel();
-            label2 = new Label();
             lblUsersname = new Label();
             pictureBox1 = new PictureBox();
             linkLabel1 = new LinkLabel();
@@ -63,6 +63,7 @@
             Tbjadwalsiram = new TextBox();
             Tbjadwalpupuk = new TextBox();
             panel1.SuspendLayout();
+            panel3.SuspendLayout();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             ((System.ComponentModel.ISupportInitialize)dataGridView1).BeginInit();
@@ -71,17 +72,42 @@
             // panel1
             // 
             panel1.BackColor = Color.FromArgb(24, 30, 54);
-            panel1.Controls.Add(btnLogout);
+            panel1.Controls.Add(btnSchedule);
+            panel1.Controls.Add(panel3);
             panel1.Controls.Add(button3);
             panel1.Controls.Add(button2);
-            panel1.Controls.Add(button1);
             panel1.Controls.Add(btnDasboard);
             panel1.Controls.Add(panel2);
             panel1.Dock = DockStyle.Left;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
-            panel1.Size = new Size(186, 538);
+            panel1.Size = new Size(186, 561);
             panel1.TabIndex = 0;
+            // 
+            // btnSchedule
+            // 
+            btnSchedule.FlatAppearance.BorderSize = 0;
+            btnSchedule.FlatStyle = FlatStyle.Flat;
+            btnSchedule.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnSchedule.ForeColor = Color.FromArgb(0, 126, 249);
+            btnSchedule.Image = (Image)resources.GetObject("btnSchedule.Image");
+            btnSchedule.Location = new Point(-1, 197);
+            btnSchedule.Name = "btnSchedule";
+            btnSchedule.Size = new Size(186, 42);
+            btnSchedule.TabIndex = 3;
+            btnSchedule.Text = "Jadwal       ";
+            btnSchedule.TextImageRelation = TextImageRelation.TextBeforeImage;
+            btnSchedule.UseVisualStyleBackColor = true;
+            btnSchedule.Click += btnSchedule_Click;
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(btnLogout);
+            panel3.Dock = DockStyle.Bottom;
+            panel3.Location = new Point(0, 499);
+            panel3.Name = "panel3";
+            panel3.Size = new Size(186, 62);
+            panel3.TabIndex = 2;
             // 
             // btnLogout
             // 
@@ -90,7 +116,7 @@
             btnLogout.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnLogout.ForeColor = Color.FromArgb(0, 126, 249);
             btnLogout.Image = (Image)resources.GetObject("btnLogout.Image");
-            btnLogout.Location = new Point(-3, 493);
+            btnLogout.Location = new Point(-3, 12);
             btnLogout.Name = "btnLogout";
             btnLogout.Size = new Size(186, 42);
             btnLogout.TabIndex = 1;
@@ -129,22 +155,6 @@
             button2.TextImageRelation = TextImageRelation.TextBeforeImage;
             button2.UseVisualStyleBackColor = true;
             // 
-            // button1
-            // 
-            button1.FlatAppearance.BorderSize = 0;
-            button1.FlatStyle = FlatStyle.Flat;
-            button1.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button1.ForeColor = Color.FromArgb(0, 126, 249);
-            button1.Image = (Image)resources.GetObject("button1.Image");
-            button1.Location = new Point(0, 215);
-            button1.Name = "button1";
-            button1.Size = new Size(186, 42);
-            button1.TabIndex = 1;
-            button1.Text = "Dashboard";
-            button1.TextImageRelation = TextImageRelation.TextBeforeImage;
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
             // btnDasboard
             // 
             btnDasboard.FlatAppearance.BorderSize = 0;
@@ -163,7 +173,6 @@
             // 
             // panel2
             // 
-            panel2.Controls.Add(label2);
             panel2.Controls.Add(lblUsersname);
             panel2.Controls.Add(pictureBox1);
             panel2.Dock = DockStyle.Top;
@@ -172,25 +181,14 @@
             panel2.Size = new Size(186, 144);
             panel2.TabIndex = 0;
             // 
-            // label2
-            // 
-            label2.AutoSize = true;
-            label2.Font = new Font("Microsoft Sans Serif", 6.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.FromArgb(158, 161, 178);
-            label2.Location = new Point(20, 116);
-            label2.Name = "label2";
-            label2.Size = new Size(163, 17);
-            label2.TabIndex = 2;
-            label2.Text = "Some User Text Here";
-            // 
             // lblUsersname
             // 
             lblUsersname.AutoSize = true;
             lblUsersname.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             lblUsersname.ForeColor = Color.FromArgb(0, 126, 249);
-            lblUsersname.Location = new Point(47, 89);
+            lblUsersname.Location = new Point(47, 93);
             lblUsersname.Name = "lblUsersname";
-            lblUsersname.Size = new Size(119, 25);
+            lblUsersname.Size = new Size(85, 16);
             lblUsersname.TabIndex = 1;
             lblUsersname.Text = "User Name";
             lblUsersname.TextAlign = ContentAlignment.MiddleCenter;
@@ -211,7 +209,7 @@
             linkLabel1.AutoSize = true;
             linkLabel1.Location = new Point(593, 372);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(194, 25);
+            linkLabel1.Size = new Size(124, 15);
             linkLabel1.TabIndex = 38;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Go to Grafik Analisis?";
@@ -221,7 +219,7 @@
             textBox6.Enabled = false;
             textBox6.Location = new Point(728, 291);
             textBox6.Name = "textBox6";
-            textBox6.Size = new Size(150, 31);
+            textBox6.Size = new Size(150, 23);
             textBox6.TabIndex = 37;
             // 
             // label8
@@ -229,7 +227,7 @@
             label8.AutoSize = true;
             label8.Location = new Point(582, 294);
             label8.Name = "label8";
-            label8.Size = new Size(122, 25);
+            label8.Size = new Size(77, 15);
             label8.TabIndex = 36;
             label8.Text = "Nama Dipilih";
             // 
@@ -312,21 +310,21 @@
             datetanggal.Format = DateTimePickerFormat.Custom;
             datetanggal.Location = new Point(349, 126);
             datetanggal.Name = "datetanggal";
-            datetanggal.Size = new Size(137, 31);
+            datetanggal.Size = new Size(137, 23);
             datetanggal.TabIndex = 31;
             // 
             // Tbtinggi
             // 
             Tbtinggi.Location = new Point(349, 186);
             Tbtinggi.Name = "Tbtinggi";
-            Tbtinggi.Size = new Size(137, 31);
+            Tbtinggi.Size = new Size(137, 23);
             Tbtinggi.TabIndex = 30;
             // 
             // Tbketerangan
             // 
             Tbketerangan.Location = new Point(349, 64);
             Tbketerangan.Name = "Tbketerangan";
-            Tbketerangan.Size = new Size(137, 31);
+            Tbketerangan.Size = new Size(137, 23);
             Tbketerangan.TabIndex = 28;
             // 
             // label7
@@ -334,7 +332,7 @@
             label7.AutoSize = true;
             label7.Location = new Point(192, 186);
             label7.Name = "label7";
-            label7.Size = new Size(124, 25);
+            label7.Size = new Size(79, 15);
             label7.TabIndex = 25;
             label7.Text = "Tinggi Tomat";
             // 
@@ -343,7 +341,7 @@
             label6.AutoSize = true;
             label6.Location = new Point(188, 197);
             label6.Name = "label6";
-            label6.Size = new Size(0, 25);
+            label6.Size = new Size(0, 15);
             label6.TabIndex = 24;
             label6.Click += label6_Click;
             // 
@@ -352,7 +350,7 @@
             label5.AutoSize = true;
             label5.Location = new Point(192, 131);
             label5.Name = "label5";
-            label5.Size = new Size(79, 25);
+            label5.Size = new Size(49, 15);
             label5.TabIndex = 23;
             label5.Text = "Tanggal";
             // 
@@ -361,7 +359,7 @@
             label4.AutoSize = true;
             label4.Location = new Point(192, 70);
             label4.Name = "label4";
-            label4.Size = new Size(111, 25);
+            label4.Size = new Size(72, 15);
             label4.TabIndex = 22;
             label4.Text = "Keterangan";
             // 
@@ -370,7 +368,7 @@
             label1.AutoSize = true;
             label1.Location = new Point(196, 251);
             label1.Name = "label1";
-            label1.Size = new Size(121, 25);
+            label1.Size = new Size(77, 15);
             label1.TabIndex = 39;
             label1.Text = "Jadwal siram";
             // 
@@ -379,7 +377,7 @@
             label3.AutoSize = true;
             label3.Location = new Point(192, 297);
             label3.Name = "label3";
-            label3.Size = new Size(129, 25);
+            label3.Size = new Size(82, 15);
             label3.TabIndex = 40;
             label3.Text = "Jadwal pupuk";
             // 
@@ -387,7 +385,7 @@
             // 
             Tbjadwalsiram.Location = new Point(349, 245);
             Tbjadwalsiram.Name = "Tbjadwalsiram";
-            Tbjadwalsiram.Size = new Size(137, 31);
+            Tbjadwalsiram.Size = new Size(137, 23);
             Tbjadwalsiram.TabIndex = 41;
             Tbjadwalsiram.TextChanged += textBox1_TextChanged;
             // 
@@ -395,15 +393,15 @@
             // 
             Tbjadwalpupuk.Location = new Point(349, 297);
             Tbjadwalpupuk.Name = "Tbjadwalpupuk";
-            Tbjadwalpupuk.Size = new Size(137, 31);
+            Tbjadwalpupuk.Size = new Size(137, 23);
             Tbjadwalpupuk.TabIndex = 42;
             // 
             // Form3
             // 
-            AutoScaleDimensions = new SizeF(11F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
-            ClientSize = new Size(935, 538);
+            ClientSize = new Size(935, 561);
             Controls.Add(Tbjadwalpupuk);
             Controls.Add(Tbjadwalsiram);
             Controls.Add(label3);
@@ -429,6 +427,7 @@
             Text = "Form3";
             Load += Form3_Load;
             panel1.ResumeLayout(false);
+            panel3.ResumeLayout(false);
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
@@ -443,12 +442,10 @@
         private Panel panel2;
         private PictureBox pictureBox1;
         private Label lblUsersname;
-        private Label label2;
         private Button btnDasboard;
         private Button btnLogout;
         private Button button3;
         private Button button2;
-        private Button button1;
         private LinkLabel linkLabel1;
         private TextBox textBox6;
         private Label label8;
@@ -478,5 +475,7 @@
         private TextBox Tbtinggi;
         private TextBox Tbjadwalsiram;
         private TextBox Tbjadwalpupuk;
+        private Panel panel3;
+        private Button btnSchedule;
     }
 }
