@@ -195,6 +195,8 @@
             dataGridViewsSchedule.Name = "dataGridViewsSchedule";
             dataGridViewsSchedule.Size = new Size(317, 219);
             dataGridViewsSchedule.TabIndex = 44;
+            // Tambahkan handler untuk event CellContentClick
+            this.dataGridViewsSchedule.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewsSchedule_CellContentClick);
             // 
             // panelModal
             // 

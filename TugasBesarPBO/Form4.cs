@@ -1,13 +1,7 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace TugasBesarPBO
@@ -51,17 +45,12 @@ namespace TugasBesarPBO
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            // Tampilkan pesan konfirmasi
             DialogResult result = MessageBox.Show("Apakah Anda yakin ingin logout?", "Konfirmasi Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            // Jika pengguna memilih "Yes"
             if (result == DialogResult.Yes)
             {
-                // Buka form login (Form1)
                 Form1 loginForm = new Form1();
                 loginForm.Show();
-
-                // Tutup form saat ini
                 this.Close();
             }
         }
@@ -74,6 +63,7 @@ namespace TugasBesarPBO
 
             // Tampilkan modal untuk Create
             panelModal.Visible = true;
+            btnSaveSchedule.Text = "Save"; // Pastikan tombol menunjukkan mode "Create"
         }
 
         private void btnSaveSchedule_Click(object sender, EventArgs e)
@@ -95,9 +85,8 @@ namespace TugasBesarPBO
 
                 var schedulesCollection = MongoDBConnection.GetCollection("schedules");
 
-                if (selectedScheduleId == null)
+                if (selectedScheduleId == null) // Jika Create
                 {
-                    // Create
                     var newSchedule = new BsonDocument
                     {
                         { "hari", hari },
@@ -110,9 +99,8 @@ namespace TugasBesarPBO
                     schedulesCollection.InsertOne(newSchedule);
                     MessageBox.Show("Jadwal berhasil dibuat.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                else
+                else // Jika Update
                 {
-                    // Update
                     var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(selectedScheduleId));
                     var update = Builders<BsonDocument>.Update
                         .Set("hari", hari)
@@ -127,6 +115,9 @@ namespace TugasBesarPBO
                 // Refresh tabel dan sembunyikan modal
                 LoadSchedules();
                 panelModal.Visible = false;
+
+                // Bersihkan ID jadwal yang dipilih
+                selectedScheduleId = null;
             }
             catch (Exception ex)
             {
@@ -144,12 +135,37 @@ namespace TugasBesarPBO
                 dataGridViewsSchedule.DataSource = schedules.Select((s, index) => new
                 {
                     No = index + 1,
-                    Id = s["_id"].ToString(),
+                    Id = s["_id"].ToString(), // Pastikan kolom "_id" dipetakan sebagai "Id"
                     Hari = s["hari"].AsString,
                     Aktivitas = s["aktivitas"].AsString,
                     JumlahPelaksanaan = s.Contains("jumlah_pelaksanaan") ? s["jumlah_pelaksanaan"].AsInt32 : 0, // Default 0
                     Keterangan = s.Contains("keterangan") ? s["keterangan"].AsString : "-" // Default "-"
                 }).ToList();
+
+                // Tambahkan kolom tombol untuk Update dan Delete
+                if (!dataGridViewsSchedule.Columns.Contains("Update"))
+                {
+                    DataGridViewButtonColumn updateColumn = new DataGridViewButtonColumn
+                    {
+                        HeaderText = "Update",
+                        Name = "Update",
+                        Text = "Update",
+                        UseColumnTextForButtonValue = true
+                    };
+                    dataGridViewsSchedule.Columns.Add(updateColumn);
+                }
+
+                if (!dataGridViewsSchedule.Columns.Contains("Delete"))
+                {
+                    DataGridViewButtonColumn deleteColumn = new DataGridViewButtonColumn
+                    {
+                        HeaderText = "Delete",
+                        Name = "Delete",
+                        Text = "Delete",
+                        UseColumnTextForButtonValue = true
+                    };
+                    dataGridViewsSchedule.Columns.Add(deleteColumn);
+                }
 
                 dataGridViewsSchedule.Columns["Id"].Visible = false; // Sembunyikan kolom ID
             }
@@ -161,33 +177,56 @@ namespace TugasBesarPBO
 
         private void dataGridViewsSchedule_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.RowIndex >= 0)
+            if (e.RowIndex >= 0 && e.ColumnIndex >= 0) // Pastikan baris dan kolom yang diklik valid
             {
-                var selectedRow = dataGridViewsSchedule.Rows[e.RowIndex];
-                selectedScheduleId = selectedRow.Cells["Id"].Value.ToString();
+                var selectedRow = dataGridViewsSchedule.Rows[e.RowIndex]; // Ambil baris yang diklik
 
-                if (dataGridViewsSchedule.Columns[e.ColumnIndex].HeaderText == "Update")
+                // Ambil nama kolom yang diklik
+                string columnName = dataGridViewsSchedule.Columns[e.ColumnIndex].Name;
+
+                if (columnName == "Update") // Jika tombol Update diklik
                 {
-                    // Load data ke modal
-                    cmbHari.SelectedItem = selectedRow.Cells["Hari"].Value.ToString();
-                    txtAktivitas.Text = selectedRow.Cells["Aktivitas"].Value.ToString();
-                    numJumlahPelaksanaan.Value = Convert.ToInt32(selectedRow.Cells["JumlahPelaksanaan"].Value);
-                    rtbKeterangan.Text = selectedRow.Cells["Keterangan"].Value.ToString();
+                    try
+                    {
+                        // Ambil data dari baris yang dipilih
+                        selectedScheduleId = selectedRow.Cells["Id"].Value.ToString(); // Pastikan kolom "Id" sesuai
 
-                    // Tampilkan modal
-                    panelModal.Visible = true;
+                        // Isi modal dengan data dari baris yang dipilih
+                        cmbHari.SelectedItem = selectedRow.Cells["Hari"].Value.ToString();
+                        txtAktivitas.Text = selectedRow.Cells["Aktivitas"].Value.ToString();
+                        numJumlahPelaksanaan.Value = Convert.ToInt32(selectedRow.Cells["JumlahPelaksanaan"].Value);
+                        rtbKeterangan.Text = selectedRow.Cells["Keterangan"].Value.ToString();
+
+                        // Ubah teks tombol menjadi "Update"
+                        btnSaveSchedule.Text = "Update";
+
+                        // Tampilkan modal
+                        panelModal.Visible = true;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Gagal memuat data untuk update: {ex.Message}", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
                 }
-                else if (dataGridViewsSchedule.Columns[e.ColumnIndex].HeaderText == "Delete")
+                else if (columnName == "Delete") // Jika tombol Delete diklik
                 {
                     var confirmResult = MessageBox.Show("Apakah Anda yakin ingin menghapus jadwal ini?", "Konfirmasi Hapus", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
                     if (confirmResult == DialogResult.Yes)
                     {
-                        var schedulesCollection = MongoDBConnection.GetCollection("schedules");
-                        var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(selectedScheduleId));
-                        schedulesCollection.DeleteOne(filter);
+                        try
+                        {
+                            var schedulesCollection = MongoDBConnection.GetCollection("schedules");
+                            var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(selectedRow.Cells["Id"].Value.ToString())); // Pastikan kolom "Id" sesuai
+                            schedulesCollection.DeleteOne(filter);
 
-                        // Refresh tabel
-                        LoadSchedules();
+                            // Refresh tabel setelah penghapusan
+                            LoadSchedules();
+                            MessageBox.Show("Jadwal berhasil dihapus.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Gagal menghapus jadwal: {ex.Message}", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
                     }
                 }
             }
