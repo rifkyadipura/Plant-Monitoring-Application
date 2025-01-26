@@ -63,6 +63,7 @@ namespace TugasBesarPBO
 
             // Tampilkan modal untuk Create
             panelModal.Visible = true;
+            panelModal.BringToFront();
             btnSaveSchedule.Text = "Save"; // Pastikan tombol menunjukkan mode "Create"
         }
 
@@ -85,8 +86,17 @@ namespace TugasBesarPBO
 
                 var schedulesCollection = MongoDBConnection.GetCollection("schedules");
 
+                // Cek apakah hari sudah dijadwalkan
+                var existingSchedule = schedulesCollection.Find(new BsonDocument { { "hari", hari } }).FirstOrDefault();
+
                 if (selectedScheduleId == null) // Jika Create
                 {
+                    if (existingSchedule != null)
+                    {
+                        MessageBox.Show("Hari ini sudah dijadwalkan. Silakan pilih hari lain.", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     var newSchedule = new BsonDocument
                     {
                         { "hari", hari },
@@ -101,6 +111,13 @@ namespace TugasBesarPBO
                 }
                 else // Jika Update
                 {
+                    // Validasi agar tidak bisa mengubah ke hari lain yang sudah ada
+                    if (existingSchedule != null && existingSchedule["_id"].ToString() != selectedScheduleId)
+                    {
+                        MessageBox.Show("Hari ini sudah dijadwalkan. Silakan pilih hari lain.", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
                     var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(selectedScheduleId));
                     var update = Builders<BsonDocument>.Update
                         .Set("hari", hari)
@@ -168,6 +185,14 @@ namespace TugasBesarPBO
                 }
 
                 dataGridViewsSchedule.Columns["Id"].Visible = false; // Sembunyikan kolom ID
+
+                // Atur ukuran kolom secara manual
+                dataGridViewsSchedule.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.None; // Matikan otomatisasi ukuran
+                dataGridViewsSchedule.Columns["No"].Width = 50; // Kolom "No" kecil
+                dataGridViewsSchedule.Columns["Hari"].Width = 100; // Kolom "Hari"
+                dataGridViewsSchedule.Columns["Aktivitas"].Width = 150; // Kolom "Aktivitas" lebih besar
+                dataGridViewsSchedule.Columns["JumlahPelaksanaan"].Width = 120; // Kolom "JumlahPelaksanaan"
+                dataGridViewsSchedule.Columns["Keterangan"].Width = 260; // Kolom "Keterangan" paling besar
             }
             catch (Exception ex)
             {
@@ -202,6 +227,9 @@ namespace TugasBesarPBO
 
                         // Tampilkan modal
                         panelModal.Visible = true;
+
+                        // Pastikan modal berada di depan
+                        panelModal.BringToFront();
                     }
                     catch (Exception ex)
                     {
@@ -238,6 +266,13 @@ namespace TugasBesarPBO
             txtAktivitas.Clear();
             numJumlahPelaksanaan.Value = 1;
             rtbKeterangan.Clear();
+            selectedScheduleId = null;
+        }
+
+        private void btnCloseModal_Click(object sender, EventArgs e)
+        {
+            panelModal.Visible = false;
+            ClearModalInputs();
         }
     }
 }
