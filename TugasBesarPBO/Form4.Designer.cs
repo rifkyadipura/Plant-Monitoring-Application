@@ -191,7 +191,7 @@
             btnCreateSchedule.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCreateSchedule.ForeColor = Color.FromArgb(0, 126, 249);
             btnCreateSchedule.Image = (Image)resources.GetObject("btnCreateSchedule.Image");
-            btnCreateSchedule.Location = new Point(540, 34);
+            btnCreateSchedule.Location = new Point(540, 19);
             btnCreateSchedule.Name = "btnCreateSchedule";
             btnCreateSchedule.Size = new Size(186, 42);
             btnCreateSchedule.TabIndex = 1;
@@ -203,7 +203,7 @@
             // dataGridViewsSchedule
             // 
             dataGridViewsSchedule.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewsSchedule.Location = new Point(26, 82);
+            dataGridViewsSchedule.Location = new Point(26, 67);
             dataGridViewsSchedule.Name = "dataGridViewsSchedule";
             dataGridViewsSchedule.Size = new Size(700, 305);
             dataGridViewsSchedule.TabIndex = 44;
@@ -223,7 +223,7 @@
             panelModal.Controls.Add(numJumlahPelaksanaan);
             panelModal.Controls.Add(txtAktivitas);
             panelModal.Controls.Add(cmbHari);
-            panelModal.Location = new Point(231, 34);
+            panelModal.Location = new Point(231, 19);
             panelModal.Name = "panelModal";
             panelModal.Size = new Size(324, 288);
             panelModal.TabIndex = 45;

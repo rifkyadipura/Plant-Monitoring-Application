@@ -35,13 +35,13 @@
             txtUsername = new TextBox();
             pictureBox2 = new PictureBox();
             panel2 = new Panel();
+            chkShowPassword = new CheckBox();
             txtPassword = new TextBox();
             pictureBox3 = new PictureBox();
             btnLogin = new Button();
             label2 = new Label();
             linkRegister = new LinkLabel();
             label3 = new Label();
-            chkShowPassword = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
@@ -111,6 +111,15 @@
             panel2.Size = new Size(323, 48);
             panel2.TabIndex = 3;
             // 
+            // chkShowPassword
+            // 
+            chkShowPassword.AutoSize = true;
+            chkShowPassword.Location = new Point(305, 18);
+            chkShowPassword.Name = "chkShowPassword";
+            chkShowPassword.Size = new Size(15, 14);
+            chkShowPassword.TabIndex = 24;
+            chkShowPassword.UseVisualStyleBackColor = true;
+            // 
             // txtPassword
             // 
             txtPassword.BorderStyle = BorderStyle.None;
@@ -172,20 +181,11 @@
             label3.AutoSize = true;
             label3.Font = new Font("Segoe UI", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label3.ForeColor = Color.Black;
-            label3.Location = new Point(104, 223);
+            label3.Location = new Point(66, 223);
             label3.Name = "label3";
-            label3.Size = new Size(273, 25);
+            label3.Size = new Size(345, 25);
             label3.TabIndex = 7;
-            label3.Text = "Plant Monitoring Application";
-            // 
-            // chkShowPassword
-            // 
-            chkShowPassword.AutoSize = true;
-            chkShowPassword.Location = new Point(305, 18);
-            chkShowPassword.Name = "chkShowPassword";
-            chkShowPassword.Size = new Size(15, 14);
-            chkShowPassword.TabIndex = 24;
-            chkShowPassword.UseVisualStyleBackColor = true;
+            label3.Text = "Tomato Plant Monitoring Application";
             // 
             // Form1
             // 

@@ -33,8 +33,6 @@
             btnSchedule = new Button();
             panel3 = new Panel();
             btnLogout = new Button();
-            button3 = new Button();
-            button2 = new Button();
             btnDasboard = new Button();
             panel2 = new Panel();
             lblUsersname = new Label();
@@ -74,8 +72,6 @@
             panel1.BackColor = Color.FromArgb(24, 30, 54);
             panel1.Controls.Add(btnSchedule);
             panel1.Controls.Add(panel3);
-            panel1.Controls.Add(button3);
-            panel1.Controls.Add(button2);
             panel1.Controls.Add(btnDasboard);
             panel1.Controls.Add(panel2);
             panel1.Dock = DockStyle.Left;
@@ -124,36 +120,6 @@
             btnLogout.TextImageRelation = TextImageRelation.TextBeforeImage;
             btnLogout.UseVisualStyleBackColor = true;
             btnLogout.Click += btnLogout_Click;
-            // 
-            // button3
-            // 
-            button3.FlatAppearance.BorderSize = 0;
-            button3.FlatStyle = FlatStyle.Flat;
-            button3.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button3.ForeColor = Color.FromArgb(0, 126, 249);
-            button3.Image = (Image)resources.GetObject("button3.Image");
-            button3.Location = new Point(-3, 311);
-            button3.Name = "button3";
-            button3.Size = new Size(186, 42);
-            button3.TabIndex = 1;
-            button3.Text = "Dashboard";
-            button3.TextImageRelation = TextImageRelation.TextBeforeImage;
-            button3.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            button2.FlatAppearance.BorderSize = 0;
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            button2.ForeColor = Color.FromArgb(0, 126, 249);
-            button2.Image = (Image)resources.GetObject("button2.Image");
-            button2.Location = new Point(-1, 263);
-            button2.Name = "button2";
-            button2.Size = new Size(186, 42);
-            button2.TabIndex = 1;
-            button2.Text = "Dashboard";
-            button2.TextImageRelation = TextImageRelation.TextBeforeImage;
-            button2.UseVisualStyleBackColor = true;
             // 
             // btnDasboard
             // 
@@ -444,8 +410,6 @@
         private Label lblUsersname;
         private Button btnDasboard;
         private Button btnLogout;
-        private Button button3;
-        private Button button2;
         private LinkLabel linkLabel1;
         private TextBox textBox6;
         private Label label8;

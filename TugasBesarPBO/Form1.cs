@@ -121,7 +121,35 @@ namespace TugasBesarPBO
                 // Login berhasil
                 MessageBox.Show("Login berhasil!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Arahkan ke Form3
+                // Ambil data jadwal hari ini dari koleksi schedules
+                var schedulesCollection = MongoDBConnection.GetCollection("schedules");
+
+                // Dapatkan nama hari saat ini
+                string today = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("id-ID"));
+
+                // Ambil jadwal berdasarkan hari ini
+                var todaysSchedules = schedulesCollection.Find(s => s["hari"] == today).ToList();
+
+                // Jika ada jadwal hari ini
+                if (todaysSchedules.Any())
+                {
+                    string jadwalHariIni = string.Join("\n", todaysSchedules.Select(s =>
+                        $"- Aktivitas: {s["aktivitas"]}\n  Keterangan: {s["keterangan"]}\n"));
+
+                    // Dapatkan nama hari dalam format Bahasa Indonesia
+                    string namaHari = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("id-ID"));
+
+                    MessageBox.Show($"Jadwal Hari {namaHari} ini:\n{jadwalHariIni}", "Pengingat Perawatan", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    // Dapatkan nama hari dalam format Bahasa Indonesia
+                    string namaHari = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("id-ID"));
+
+                    MessageBox.Show($"Tidak ada jadwal perawatan untuk hari {namaHari} ini.", "Pengingat Perawatan", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                // Arahkan ke Form3 (dashboard)
                 Form3 formDashboard = new Form3(username); // Kirim username
                 formDashboard.Show();
                 this.Hide();
