@@ -10,7 +10,7 @@ namespace TugasBesarPBO
 {
     internal class MongoDBConnection
     {
-        private static readonly IMongoDatabase database;
+        public static readonly IMongoDatabase database;
 
         static MongoDBConnection()
         {
@@ -21,6 +21,14 @@ namespace TugasBesarPBO
         public static IMongoCollection<BsonDocument> GetCollection(string collectionName)
         {
             return database.GetCollection<BsonDocument>(collectionName);
+        }
+        public static void UpdateDocument(string collectionName, FilterDefinition<BsonDocument> filter, UpdateDefinition<BsonDocument> update)
+        {
+            // Dapatkan koleksi yang sesuai
+            var collection = GetCollection(collectionName);
+
+            // Perbarui dokumen sesuai filter dan update yang diberikan
+            var result = collection.UpdateOne(filter, update);
         }
     }
 }

@@ -44,6 +44,7 @@
             button4 = new Button();
             dataGridView1 = new DataGridView();
             Column1 = new DataGridViewTextBoxColumn();
+            Column6 = new DataGridViewTextBoxColumn();
             Column2 = new DataGridViewTextBoxColumn();
             Column3 = new DataGridViewTextBoxColumn();
             Column4 = new DataGridViewTextBoxColumn();
@@ -58,8 +59,9 @@
             label4 = new Label();
             label1 = new Label();
             label3 = new Label();
-            Tbjadwalsiram = new TextBox();
-            Tbjadwalpupuk = new TextBox();
+            tbdaun = new TextBox();
+            tbair = new TextBox();
+            tb_id = new TextBox();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -154,7 +156,7 @@
             lblUsersname.ForeColor = Color.FromArgb(0, 126, 249);
             lblUsersname.Location = new Point(47, 93);
             lblUsersname.Name = "lblUsersname";
-            lblUsersname.Size = new Size(85, 16);
+            lblUsersname.Size = new Size(119, 25);
             lblUsersname.TabIndex = 1;
             lblUsersname.Text = "User Name";
             lblUsersname.TextAlign = ContentAlignment.MiddleCenter;
@@ -175,7 +177,7 @@
             linkLabel1.AutoSize = true;
             linkLabel1.Location = new Point(593, 372);
             linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(124, 15);
+            linkLabel1.Size = new Size(194, 25);
             linkLabel1.TabIndex = 38;
             linkLabel1.TabStop = true;
             linkLabel1.Text = "Go to Grafik Analisis?";
@@ -185,7 +187,7 @@
             textBox6.Enabled = false;
             textBox6.Location = new Point(728, 291);
             textBox6.Name = "textBox6";
-            textBox6.Size = new Size(150, 23);
+            textBox6.Size = new Size(150, 31);
             textBox6.TabIndex = 37;
             // 
             // label8
@@ -193,7 +195,7 @@
             label8.AutoSize = true;
             label8.Location = new Point(582, 294);
             label8.Name = "label8";
-            label8.Size = new Size(77, 15);
+            label8.Size = new Size(122, 25);
             label8.TabIndex = 36;
             label8.Text = "Nama Dipilih";
             // 
@@ -205,6 +207,7 @@
             btn_delete.TabIndex = 35;
             btn_delete.Text = "Delete";
             btn_delete.UseVisualStyleBackColor = true;
+            btn_delete.Click += btn_delete_Click_1;
             // 
             // button4
             // 
@@ -214,16 +217,18 @@
             button4.TabIndex = 34;
             button4.Text = "Edit";
             button4.UseVisualStyleBackColor = true;
+            button4.Click += button4_Click;
             // 
             // dataGridView1
             // 
             dataGridView1.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column2, Column3, Column4, Column5 });
+            dataGridView1.Columns.AddRange(new DataGridViewColumn[] { Column1, Column6, Column2, Column3, Column4, Column5 });
             dataGridView1.Location = new Point(548, 60);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 62;
             dataGridView1.Size = new Size(359, 225);
             dataGridView1.TabIndex = 33;
+            dataGridView1.CellClick += dataGridView1_CellClick;
             // 
             // Column1
             // 
@@ -231,6 +236,14 @@
             Column1.MinimumWidth = 8;
             Column1.Name = "Column1";
             Column1.Width = 150;
+            // 
+            // Column6
+            // 
+            Column6.HeaderText = "_id";
+            Column6.MinimumWidth = 8;
+            Column6.Name = "Column6";
+            Column6.Visible = false;
+            Column6.Width = 150;
             // 
             // Column2
             // 
@@ -248,14 +261,14 @@
             // 
             // Column4
             // 
-            Column4.HeaderText = "Jadwal siram";
+            Column4.HeaderText = "Kondisi Daun";
             Column4.MinimumWidth = 8;
             Column4.Name = "Column4";
             Column4.Width = 150;
             // 
             // Column5
             // 
-            Column5.HeaderText = "Jadwal Pupuk";
+            Column5.HeaderText = "Kebutuhan Air";
             Column5.MinimumWidth = 8;
             Column5.Name = "Column5";
             Column5.Width = 150;
@@ -276,21 +289,21 @@
             datetanggal.Format = DateTimePickerFormat.Custom;
             datetanggal.Location = new Point(349, 126);
             datetanggal.Name = "datetanggal";
-            datetanggal.Size = new Size(137, 23);
+            datetanggal.Size = new Size(137, 31);
             datetanggal.TabIndex = 31;
             // 
             // Tbtinggi
             // 
             Tbtinggi.Location = new Point(349, 186);
             Tbtinggi.Name = "Tbtinggi";
-            Tbtinggi.Size = new Size(137, 23);
+            Tbtinggi.Size = new Size(137, 31);
             Tbtinggi.TabIndex = 30;
             // 
             // Tbketerangan
             // 
             Tbketerangan.Location = new Point(349, 64);
             Tbketerangan.Name = "Tbketerangan";
-            Tbketerangan.Size = new Size(137, 23);
+            Tbketerangan.Size = new Size(137, 31);
             Tbketerangan.TabIndex = 28;
             // 
             // label7
@@ -298,7 +311,7 @@
             label7.AutoSize = true;
             label7.Location = new Point(192, 186);
             label7.Name = "label7";
-            label7.Size = new Size(79, 15);
+            label7.Size = new Size(124, 25);
             label7.TabIndex = 25;
             label7.Text = "Tinggi Tomat";
             // 
@@ -307,7 +320,7 @@
             label6.AutoSize = true;
             label6.Location = new Point(188, 197);
             label6.Name = "label6";
-            label6.Size = new Size(0, 15);
+            label6.Size = new Size(0, 25);
             label6.TabIndex = 24;
             label6.Click += label6_Click;
             // 
@@ -316,7 +329,7 @@
             label5.AutoSize = true;
             label5.Location = new Point(192, 131);
             label5.Name = "label5";
-            label5.Size = new Size(49, 15);
+            label5.Size = new Size(79, 25);
             label5.TabIndex = 23;
             label5.Text = "Tanggal";
             // 
@@ -325,51 +338,61 @@
             label4.AutoSize = true;
             label4.Location = new Point(192, 70);
             label4.Name = "label4";
-            label4.Size = new Size(72, 15);
+            label4.Size = new Size(111, 25);
             label4.TabIndex = 22;
             label4.Text = "Keterangan";
+            label4.Click += label4_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
             label1.Location = new Point(196, 251);
             label1.Name = "label1";
-            label1.Size = new Size(77, 15);
+            label1.Size = new Size(125, 25);
             label1.TabIndex = 39;
-            label1.Text = "Jadwal siram";
+            label1.Text = "Kondisi Daun";
             // 
             // label3
             // 
             label3.AutoSize = true;
             label3.Location = new Point(192, 297);
             label3.Name = "label3";
-            label3.Size = new Size(82, 15);
+            label3.Size = new Size(136, 25);
             label3.TabIndex = 40;
-            label3.Text = "Jadwal pupuk";
+            label3.Text = "Kebutuhan Air";
             // 
-            // Tbjadwalsiram
+            // tbdaun
             // 
-            Tbjadwalsiram.Location = new Point(349, 245);
-            Tbjadwalsiram.Name = "Tbjadwalsiram";
-            Tbjadwalsiram.Size = new Size(137, 23);
-            Tbjadwalsiram.TabIndex = 41;
-            Tbjadwalsiram.TextChanged += textBox1_TextChanged;
+            tbdaun.Location = new Point(349, 245);
+            tbdaun.Name = "tbdaun";
+            tbdaun.Size = new Size(137, 31);
+            tbdaun.TabIndex = 41;
+            tbdaun.TextChanged += textBox1_TextChanged;
             // 
-            // Tbjadwalpupuk
+            // tbair
             // 
-            Tbjadwalpupuk.Location = new Point(349, 297);
-            Tbjadwalpupuk.Name = "Tbjadwalpupuk";
-            Tbjadwalpupuk.Size = new Size(137, 23);
-            Tbjadwalpupuk.TabIndex = 42;
+            tbair.Location = new Point(349, 297);
+            tbair.Name = "tbair";
+            tbair.Size = new Size(137, 31);
+            tbair.TabIndex = 42;
+            // 
+            // tb_id
+            // 
+            tb_id.Location = new Point(345, 20);
+            tb_id.Name = "tb_id";
+            tb_id.Size = new Size(150, 31);
+            tb_id.TabIndex = 43;
+            tb_id.Visible = false;
             // 
             // Form3
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(11F, 25F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
             ClientSize = new Size(935, 561);
-            Controls.Add(Tbjadwalpupuk);
-            Controls.Add(Tbjadwalsiram);
+            Controls.Add(tb_id);
+            Controls.Add(tbair);
+            Controls.Add(tbdaun);
             Controls.Add(label3);
             Controls.Add(label1);
             Controls.Add(linkLabel1);
@@ -416,12 +439,6 @@
         private Button btn_delete;
         private Button button4;
         private DataGridView dataGridView1;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
-        private DataGridViewTextBoxColumn Column5;
-        private DataGridViewTextBoxColumn Column6;
         private Button button5;
         private DateTimePicker dateTimePicker1;
         private TextBox textBox5;
@@ -437,9 +454,16 @@
         private DateTimePicker datetanggal;
         private TextBox Tbketerangan;
         private TextBox Tbtinggi;
-        private TextBox Tbjadwalsiram;
-        private TextBox Tbjadwalpupuk;
+        private TextBox tbdaun;
+        private TextBox tbair;
         private Panel panel3;
         private Button btnSchedule;
+        private TextBox tb_id;
+        private DataGridViewTextBoxColumn Column1;
+        private DataGridViewTextBoxColumn Column6;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
+        private DataGridViewTextBoxColumn Column5;
     }
 }
