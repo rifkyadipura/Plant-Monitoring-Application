@@ -147,7 +147,10 @@ namespace TugasBesarPBO
             try
             {
                 var schedulesCollection = MongoDBConnection.GetCollection("schedules");
-                var schedules = schedulesCollection.Find(new BsonDocument()).ToList();
+
+                // Filter hanya mengambil data berdasarkan username pengguna yang login
+                var filter = Builders<BsonDocument>.Filter.Eq("created_by", username);
+                var schedules = schedulesCollection.Find(filter).ToList();
 
                 dataGridViewsSchedule.DataSource = schedules.Select((s, index) => new
                 {
@@ -159,7 +162,7 @@ namespace TugasBesarPBO
                     Keterangan = s.Contains("keterangan") ? s["keterangan"].AsString : "-" // Default "-"
                 }).ToList();
 
-                // Tambahkan kolom tombol untuk Update dan Delete
+                // Tambahkan kolom tombol untuk Update dan Delete jika belum ada
                 if (!dataGridViewsSchedule.Columns.Contains("Update"))
                 {
                     DataGridViewButtonColumn updateColumn = new DataGridViewButtonColumn

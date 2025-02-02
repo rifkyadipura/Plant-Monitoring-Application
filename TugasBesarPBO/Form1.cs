@@ -1,3 +1,4 @@
+using MongoDB.Bson;
 using MongoDB.Driver;
 using System.Text;
 
@@ -124,11 +125,17 @@ namespace TugasBesarPBO
                 // Ambil data jadwal hari ini dari koleksi schedules
                 var schedulesCollection = MongoDBConnection.GetCollection("schedules");
 
-                // Dapatkan nama hari saat ini
+                // Dapatkan nama hari saat ini dalam format Bahasa Indonesia
                 string today = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("id-ID"));
 
-                // Ambil jadwal berdasarkan hari ini
-                var todaysSchedules = schedulesCollection.Find(s => s["hari"] == today).ToList();
+                // Filter untuk mengambil jadwal yang dibuat oleh pengguna yang login
+                var filter = Builders<BsonDocument>.Filter.And(
+                    Builders<BsonDocument>.Filter.Eq("hari", today), // Filter berdasarkan hari
+                    Builders<BsonDocument>.Filter.Eq("created_by", username) // Filter berdasarkan akun yang login
+                );
+
+                // Ambil jadwal berdasarkan hari ini dan username
+                var todaysSchedules = schedulesCollection.Find(filter).ToList();
 
                 // Jika ada jadwal hari ini
                 if (todaysSchedules.Any())
@@ -136,17 +143,11 @@ namespace TugasBesarPBO
                     string jadwalHariIni = string.Join("\n", todaysSchedules.Select(s =>
                         $"- Aktivitas: {s["aktivitas"]}\n  Keterangan: {s["keterangan"]}\n"));
 
-                    // Dapatkan nama hari dalam format Bahasa Indonesia
-                    string namaHari = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("id-ID"));
-
-                    MessageBox.Show($"Jadwal Hari {namaHari} ini:\n{jadwalHariIni}", "Pengingat Perawatan", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Jadwal Hari {today} ini:\n{jadwalHariIni}", "Pengingat Perawatan", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 else
                 {
-                    // Dapatkan nama hari dalam format Bahasa Indonesia
-                    string namaHari = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("id-ID"));
-
-                    MessageBox.Show($"Tidak ada jadwal perawatan untuk hari {namaHari} ini.", "Pengingat Perawatan", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show($"Tidak ada jadwal perawatan untuk hari {today} ini.", "Pengingat Perawatan", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 // Arahkan ke Form3 (dashboard)

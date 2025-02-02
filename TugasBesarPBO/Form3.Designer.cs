@@ -37,7 +37,7 @@
             panel2 = new Panel();
             lblUsersname = new Label();
             pictureBox1 = new PictureBox();
-            linkLabel1 = new LinkLabel();
+            linkGrafik = new LinkLabel();
             textBox6 = new TextBox();
             label8 = new Label();
             btn_delete = new Button();
@@ -156,11 +156,10 @@
             lblUsersname.ForeColor = Color.FromArgb(0, 126, 249);
             lblUsersname.Location = new Point(47, 93);
             lblUsersname.Name = "lblUsersname";
-            lblUsersname.Size = new Size(119, 25);
+            lblUsersname.Size = new Size(85, 16);
             lblUsersname.TabIndex = 1;
             lblUsersname.Text = "User Name";
             lblUsersname.TextAlign = ContentAlignment.MiddleCenter;
-            lblUsersname.Click += lblUsersname_Click;
             // 
             // pictureBox1
             // 
@@ -172,22 +171,22 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // linkLabel1
+            // linkGrafik
             // 
-            linkLabel1.AutoSize = true;
-            linkLabel1.Location = new Point(593, 372);
-            linkLabel1.Name = "linkLabel1";
-            linkLabel1.Size = new Size(194, 25);
-            linkLabel1.TabIndex = 38;
-            linkLabel1.TabStop = true;
-            linkLabel1.Text = "Go to Grafik Analisis?";
+            linkGrafik.AutoSize = true;
+            linkGrafik.Location = new Point(593, 372);
+            linkGrafik.Name = "linkGrafik";
+            linkGrafik.Size = new Size(124, 15);
+            linkGrafik.TabIndex = 38;
+            linkGrafik.TabStop = true;
+            linkGrafik.Text = "Go to Grafik Analisis?";
             // 
             // textBox6
             // 
             textBox6.Enabled = false;
             textBox6.Location = new Point(728, 291);
             textBox6.Name = "textBox6";
-            textBox6.Size = new Size(150, 31);
+            textBox6.Size = new Size(150, 23);
             textBox6.TabIndex = 37;
             // 
             // label8
@@ -195,7 +194,7 @@
             label8.AutoSize = true;
             label8.Location = new Point(582, 294);
             label8.Name = "label8";
-            label8.Size = new Size(122, 25);
+            label8.Size = new Size(77, 15);
             label8.TabIndex = 36;
             label8.Text = "Nama Dipilih";
             // 
@@ -226,7 +225,7 @@
             dataGridView1.Location = new Point(548, 60);
             dataGridView1.Name = "dataGridView1";
             dataGridView1.RowHeadersWidth = 62;
-            dataGridView1.Size = new Size(359, 225);
+            dataGridView1.Size = new Size(424, 225);
             dataGridView1.TabIndex = 33;
             dataGridView1.CellClick += dataGridView1_CellClick;
             // 
@@ -287,31 +286,31 @@
             // 
             datetanggal.CustomFormat = "yyyy-MM-dd";
             datetanggal.Format = DateTimePickerFormat.Custom;
-            datetanggal.Location = new Point(349, 126);
+            datetanggal.Location = new Point(349, 70);
             datetanggal.Name = "datetanggal";
-            datetanggal.Size = new Size(137, 31);
+            datetanggal.Size = new Size(137, 23);
             datetanggal.TabIndex = 31;
             // 
             // Tbtinggi
             // 
-            Tbtinggi.Location = new Point(349, 186);
+            Tbtinggi.Location = new Point(349, 130);
             Tbtinggi.Name = "Tbtinggi";
-            Tbtinggi.Size = new Size(137, 31);
+            Tbtinggi.Size = new Size(137, 23);
             Tbtinggi.TabIndex = 30;
             // 
             // Tbketerangan
             // 
-            Tbketerangan.Location = new Point(349, 64);
+            Tbketerangan.Location = new Point(349, 285);
             Tbketerangan.Name = "Tbketerangan";
-            Tbketerangan.Size = new Size(137, 31);
+            Tbketerangan.Size = new Size(137, 23);
             Tbketerangan.TabIndex = 28;
             // 
             // label7
             // 
             label7.AutoSize = true;
-            label7.Location = new Point(192, 186);
+            label7.Location = new Point(192, 130);
             label7.Name = "label7";
-            label7.Size = new Size(124, 25);
+            label7.Size = new Size(79, 15);
             label7.TabIndex = 25;
             label7.Text = "Tinggi Tomat";
             // 
@@ -320,82 +319,79 @@
             label6.AutoSize = true;
             label6.Location = new Point(188, 197);
             label6.Name = "label6";
-            label6.Size = new Size(0, 25);
+            label6.Size = new Size(0, 15);
             label6.TabIndex = 24;
-            label6.Click += label6_Click;
             // 
             // label5
             // 
             label5.AutoSize = true;
-            label5.Location = new Point(192, 131);
+            label5.Location = new Point(192, 75);
             label5.Name = "label5";
-            label5.Size = new Size(79, 25);
+            label5.Size = new Size(49, 15);
             label5.TabIndex = 23;
             label5.Text = "Tanggal";
             // 
             // label4
             // 
             label4.AutoSize = true;
-            label4.Location = new Point(192, 70);
+            label4.Location = new Point(192, 291);
             label4.Name = "label4";
-            label4.Size = new Size(111, 25);
+            label4.Size = new Size(72, 15);
             label4.TabIndex = 22;
             label4.Text = "Keterangan";
-            label4.Click += label4_Click;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(196, 251);
+            label1.Location = new Point(196, 195);
             label1.Name = "label1";
-            label1.Size = new Size(125, 25);
+            label1.Size = new Size(79, 15);
             label1.TabIndex = 39;
             label1.Text = "Kondisi Daun";
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(192, 297);
+            label3.Location = new Point(192, 241);
             label3.Name = "label3";
-            label3.Size = new Size(136, 25);
+            label3.Size = new Size(87, 15);
             label3.TabIndex = 40;
             label3.Text = "Kebutuhan Air";
             // 
             // tbdaun
             // 
-            tbdaun.Location = new Point(349, 245);
+            tbdaun.Location = new Point(349, 189);
             tbdaun.Name = "tbdaun";
-            tbdaun.Size = new Size(137, 31);
+            tbdaun.Size = new Size(137, 23);
             tbdaun.TabIndex = 41;
-            tbdaun.TextChanged += textBox1_TextChanged;
             // 
             // tbair
             // 
-            tbair.Location = new Point(349, 297);
+            tbair.Location = new Point(349, 241);
             tbair.Name = "tbair";
-            tbair.Size = new Size(137, 31);
+            tbair.Size = new Size(137, 23);
             tbair.TabIndex = 42;
             // 
             // tb_id
             // 
             tb_id.Location = new Point(345, 20);
             tb_id.Name = "tb_id";
-            tb_id.Size = new Size(150, 31);
+            tb_id.Size = new Size(150, 23);
             tb_id.TabIndex = 43;
             tb_id.Visible = false;
             // 
             // Form3
             // 
-            AutoScaleDimensions = new SizeF(11F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
-            ClientSize = new Size(935, 561);
+            ClientSize = new Size(984, 561);
             Controls.Add(tb_id);
             Controls.Add(tbair);
             Controls.Add(tbdaun);
             Controls.Add(label3);
             Controls.Add(label1);
-            Controls.Add(linkLabel1);
+            Controls.Add(linkGrafik);
             Controls.Add(textBox6);
             Controls.Add(label8);
             Controls.Add(btn_delete);
@@ -414,7 +410,6 @@
             Name = "Form3";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form3";
-            Load += Form3_Load;
             panel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel2.ResumeLayout(false);
@@ -433,7 +428,7 @@
         private Label lblUsersname;
         private Button btnDasboard;
         private Button btnLogout;
-        private LinkLabel linkLabel1;
+        private LinkLabel linkGrafik;
         private TextBox textBox6;
         private Label label8;
         private Button btn_delete;

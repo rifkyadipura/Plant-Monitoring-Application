@@ -1,16 +1,8 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Driver;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
 namespace TugasBesarPBO
 {
@@ -21,6 +13,7 @@ namespace TugasBesarPBO
         {
             InitializeComponent();
             this.username = username;
+            SetupDataGridView();
             LoadData();
 
             // Tampilkan username di label
@@ -29,45 +22,71 @@ namespace TugasBesarPBO
 
         private void btnLogout_Click(object sender, EventArgs e)
         {
-            // Tampilkan pesan konfirmasi
             DialogResult result = MessageBox.Show("Apakah Anda yakin ingin logout?", "Konfirmasi Logout", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
-            // Jika pengguna memilih "Yes"
             if (result == DialogResult.Yes)
             {
-                // Buka form login (Form1)
                 Form1 loginForm = new Form1();
                 loginForm.Show();
-
-                // Tutup form saat ini
                 this.Close();
             }
+        }
+
+        private void SetupDataGridView()
+        {
+            dataGridView1.Columns.Clear();
+
+            // Mencegah baris kosong muncul
+            dataGridView1.AllowUserToAddRows = false;
+
+            // Mengatur kolom DataGridView
+            dataGridView1.Columns.Add("Nomor", "No.");
+            dataGridView1.Columns.Add("Tanggal", "Tanggal");
+            dataGridView1.Columns.Add("TinggiTomat", "Tinggi Tomat (cm)");
+            dataGridView1.Columns.Add("KondisiDaun", "Kondisi Daun");
+            dataGridView1.Columns.Add("KebutuhanAir", "Kebutuhan Air (ml)");
+            dataGridView1.Columns.Add("Keterangan", "Keterangan");
+
+            // Tambahkan kolom ID tetapi disembunyikan
+            DataGridViewTextBoxColumn idColumn = new DataGridViewTextBoxColumn();
+            idColumn.Name = "ID";
+            idColumn.HeaderText = "ID";
+            idColumn.Visible = false;
+            dataGridView1.Columns.Add(idColumn);
+
+            // Mencegah editing manual
+            dataGridView1.ReadOnly = true;
         }
 
         private void LoadData()
         {
             try
             {
-                // Hapus semua baris di DataGridView
                 dataGridView1.Rows.Clear();
 
                 var collection = MongoDBConnection.GetCollection("daily_tomato_records");
 
-                // Ambil semua dokumen dari koleksi MongoDB
-                var documents = collection.Find(new BsonDocument()).ToList();
+                // Hanya mengambil data yang dibuat oleh akun yang sedang login
+                var filter = Builders<BsonDocument>.Filter.Eq("created_by", username);
 
-                // Loop melalui dokumen dan tambahkan ke DataGridView
+                var documents = collection.Find(filter)
+                                          .Sort(Builders<BsonDocument>.Sort.Descending("tanggal"))
+                                          .ToList();
+
+                int nomor = 1;
+
                 foreach (var doc in documents)
                 {
-                    string _id = doc.GetValue("_id", "").ToString();
-                    string keterangan = doc.GetValue("keterangan", "").ToString();
-                    DateTime tanggal = doc.GetValue("tanggal", DateTime.Now).ToUniversalTime();
-                    string tinggitomat = doc.GetValue("tinggitomat", "").ToString();
-                    string kondisidaun = doc.GetValue("kondisidaun", "").ToString();
-                    string kebutuhanair = doc.GetValue("kebutuhanair", "").ToString();
+                    string _id = doc.Contains("_id") ? doc["_id"].ToString() : "-";
+                    DateTime tanggalRaw = doc.Contains("tanggal") ? doc["tanggal"].ToUniversalTime() : DateTime.UtcNow;
+                    string tanggal = tanggalRaw.ToLocalTime().ToString("yyyy-MM-dd");
 
-                    // Tambahkan baris ke DataGridView
-                    dataGridView1.Rows.Add(keterangan, _id, tanggal.ToString("yyyy-MM-dd"), tinggitomat, kondisidaun, kebutuhanair);
+                    string tinggiTomat = doc.Contains("tinggi_tomat_cm") ? doc["tinggi_tomat_cm"].ToString() : "0";
+                    string kondisiDaun = doc.Contains("kondisi_daun") ? doc["kondisi_daun"].ToString() : "-";
+                    string kebutuhanAir = doc.Contains("kebutuhan_air_ml") ? doc["kebutuhan_air_ml"].ToString() : "0";
+                    string keterangan = doc.Contains("keterangan") ? doc["keterangan"].ToString() : "-";
+
+                    dataGridView1.Rows.Add(nomor++, tanggal, tinggiTomat, kondisiDaun, kebutuhanAir, keterangan, _id);
                 }
             }
             catch (Exception ex)
@@ -76,39 +95,22 @@ namespace TugasBesarPBO
             }
         }
 
-        private void lblUsersname_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void Form3_Load(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnDasboard_Click(object sender, EventArgs e)
         {
             this.Refresh();
         }
-
-        private void label1_Click(object sender, EventArgs e)
+        private void btnSchedule_Click(object sender, EventArgs e)
         {
-
+            Form4 form4 = new Form4(username);
+            form4.Show();
+            this.Hide();
         }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void button5_Click(object sender, EventArgs e)
         {
-            // **Hubungkan ke koleksi users** (Penempatan di sini)
             var usersCollection = MongoDBConnection.GetCollection("daily_tomato_records");
 
             try
             {
-                // Validasi input
                 if (string.IsNullOrEmpty(Tbketerangan.Text) ||
                     string.IsNullOrEmpty(Tbtinggi.Text) || string.IsNullOrEmpty(tbdaun.Text) || string.IsNullOrEmpty(tbair.Text))
                 {
@@ -116,177 +118,87 @@ namespace TugasBesarPBO
                     return;
                 }
 
-                // Ambil data dari input pengguna
+                int tinggiTomat = int.Parse(Tbtinggi.Text);
+                int kebutuhanAir = int.Parse(tbair.Text);
                 string keterangan = Tbketerangan.Text;
-                DateTime tanggal = datetanggal.Value;
-                string tinggitomat = Tbtinggi.Text;
-                string kondisidaun = tbdaun.Text;
-                string kebutuhanair = tbair.Text;
+                DateTime tanggal = datetanggal.Value.ToUniversalTime();
+                string kondisiDaun = tbdaun.Text;
 
-                // Buat dokumen BSON untuk disimpan ke MongoDB
                 var Datatomat = new BsonDocument
                 {
-                    { "keterangan", keterangan },
                     { "tanggal", tanggal },
-                    { "tinggitomat", tinggitomat },
-                    { "kondisidaun", kondisidaun},
-                    { "kebutuhanair", kebutuhanair},
+                    { "tinggi_tomat_cm", tinggiTomat },
+                    { "kondisi_daun", kondisiDaun },
+                    { "kebutuhan_air_ml", kebutuhanAir },
+                    { "keterangan", keterangan },
+                    { "created_by", username }, // ✅ Simpan username yang membuat data
+                    { "created_at", DateTime.UtcNow } // ✅ Simpan waktu pembuatan dalam UTC
                 };
 
-                // Simpan ke koleksi MongoDB
                 usersCollection.InsertOne(Datatomat);
 
-                // Tampilkan pesan sukses
-                MessageBox.Show("Data pasien berhasil disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Data tanaman berhasil disimpan!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                // Kosongkan form
                 Tbketerangan.Clear();
                 Tbtinggi.Clear();
                 tbdaun.Clear();
                 tbair.Clear();
                 tb_id.Clear();
-                datetanggal.Value = DateTime.Now;
+                datetanggal.Value = DateTime.UtcNow;
 
-                // Muat ulang data ke DataGridView
                 LoadData();
             }
             catch (FormatException ex)
             {
-                MessageBox.Show($"Input yang Anda masukkan tidak valid: {ex.Message}", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Input angka tidak valid: {ex.Message}", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
                 MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnSchedule_Click(object sender, EventArgs e)
-        {
-            Form4 form4 = new Form4(username);
-            form4.Show();
-            this.Hide();
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            // Cek jika ada baris yang dipilih (e.RowIndex tidak -1)
             if (e.RowIndex >= 0)
             {
-                // Ambil data dari baris yang dipilih
                 DataGridViewRow row = dataGridView1.Rows[e.RowIndex];
 
-                // Set data ke TextBox sesuai dengan kolom di DataGridView
-                Tbketerangan.Text = row.Cells["Column1"].Value?.ToString() ?? ""; // Nama
-
-                // Periksa apakah nilai tanggal adalah null sebelum diproses
-                if (row.Cells["Column2"].Value != null && DateTime.TryParse(row.Cells["Column2"].Value.ToString(), out DateTime tanggal))
+                tb_id.Text = row.Cells["ID"].Value?.ToString() ?? "";
+                if (row.Cells["Tanggal"].Value != null && DateTime.TryParse(row.Cells["Tanggal"].Value.ToString(), out DateTime tanggal))
                 {
-                    datetanggal.Value = tanggal; // Set nilai valid ke DateTimePicker
+                    datetanggal.Value = tanggal;
                 }
                 else
                 {
-                    datetanggal.Value = DateTime.Now; // Default ke tanggal saat ini jika null atau tidak valid
+                    datetanggal.Value = DateTime.Now;
                     MessageBox.Show("Tanggal tidak valid atau kosong. Mengatur ke tanggal saat ini.", "Informasi", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
-                Tbtinggi.Text = row.Cells["Column3"].Value?.ToString() ?? "";
-                tbdaun.Text = row.Cells["Column4"].Value?.ToString() ?? "";
-                tbair.Text = row.Cells["Column5"].Value?.ToString() ?? "";
-                tb_id.Text = row.Cells["Column6"].Value?.ToString() ?? "";
-            }
-        }
-
-        private void button4_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // Validasi input, pastikan id tidak kosong (karena digunakan sebagai kunci pencarian)
-                if (string.IsNullOrEmpty(tb_id.Text))
-                {
-                    MessageBox.Show("ID harus diisi untuk mengedit data!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    return;
-                }
-
-                string keterangan = Tbketerangan.Text;
-                DateTime tanggal = datetanggal.Value;
-                string tinggi = Tbtinggi.Text;
-                string kondisidaun = tbdaun.Text;
-                string kebutuhanair = tbair.Text;
-
-                // Build filter untuk mencari dokumen berdasarkan _id
-                var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(tb_id.Text));
-
-                // Build pembaruan menggunakan UpdateDefinition
-                var update = Builders<BsonDocument>.Update.Combine(
-                    !string.IsNullOrEmpty(keterangan) ? Builders<BsonDocument>.Update.Set("keterangan", keterangan) : null,
-                    Builders<BsonDocument>.Update.Set("tanggal", tanggal),
-                    !string.IsNullOrEmpty(tinggi) ? Builders<BsonDocument>.Update.Set("tinggitomat", tinggi) : null,
-                    !string.IsNullOrEmpty(kondisidaun) ? Builders<BsonDocument>.Update.Set("kondisidaun", kondisidaun) : null,
-                    !string.IsNullOrEmpty(kebutuhanair) ? Builders<BsonDocument>.Update.Set("kebutuhanair", kebutuhanair) : null
-                );
-
-
-                // Panggil metode UpdateDocument dari MongoDBConnection
-                MongoDBConnection.UpdateDocument("daily_tomato_records", filter, update);
-
-                // Tampilkan pesan hasil
-                MessageBox.Show("Data berhasil diperbarui!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                // Kosongkan form
-                Tbketerangan.Clear();
-                Tbtinggi.Clear();
-                tbdaun.Clear();
-                tbair.Clear();
-                tb_id.Clear();
-                datetanggal.Value = DateTime.Now;
-
-                // Muat ulang data ke DataGridView
-                LoadData();
-            }
-            catch (FormatException ex)
-            {
-                MessageBox.Show($"Input yang Anda masukkan tidak valid: {ex.Message}", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Tbtinggi.Text = row.Cells["TinggiTomat"].Value?.ToString() ?? "";
+                tbdaun.Text = row.Cells["KondisiDaun"].Value?.ToString() ?? "";
+                tbair.Text = row.Cells["KebutuhanAir"].Value?.ToString() ?? "";
+                Tbketerangan.Text = row.Cells["Keterangan"].Value?.ToString() ?? "";
             }
         }
 
         private void btn_delete_Click_1(object sender, EventArgs e)
         {
-
             try
             {
-                // Validasi input, pastikan ID tidak kosong
                 if (string.IsNullOrEmpty(tb_id.Text))
                 {
                     MessageBox.Show("ID harus diisi untuk menghapus data!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Build filter untuk mencari dokumen berdasarkan _id
                 var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(tb_id.Text));
-
-                // Eksekusi penghapusan dan simpan hasilnya
                 var result = MongoDBConnection.GetCollection("daily_tomato_records").DeleteOne(filter);
 
-                // Tampilkan pesan hasil
                 if (result.DeletedCount > 0)
                 {
                     MessageBox.Show("Data berhasil dihapus!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Kosongkan form setelah penghapusan
                     Tbketerangan.Clear();
                     Tbtinggi.Clear();
                     tbdaun.Clear();
@@ -294,7 +206,6 @@ namespace TugasBesarPBO
                     tb_id.Clear();
                     datetanggal.Value = DateTime.Now;
 
-                    // Muat ulang data ke DataGridView
                     LoadData();
                 }
                 else
@@ -305,6 +216,67 @@ namespace TugasBesarPBO
             catch (FormatException)
             {
                 MessageBox.Show("ID yang dimasukkan tidak valid! Pastikan formatnya benar.", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(tb_id.Text))
+                {
+                    MessageBox.Show("ID harus diisi untuk mengedit data!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                var filter = Builders<BsonDocument>.Filter.Eq("_id", new ObjectId(tb_id.Text));
+
+                var existingDocument = MongoDBConnection.GetCollection("daily_tomato_records").Find(filter).FirstOrDefault();
+                if (existingDocument == null)
+                {
+                    MessageBox.Show("Data tidak ditemukan!", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                // ✅ Ambil tanggal lama dari database dan pastikan tidak berubah jika user tidak mengedit
+                DateTime tanggalLama = existingDocument["tanggal"].ToUniversalTime();
+                DateTime tanggalInput = datetanggal.Value; // Nilai dari DateTimePicker
+
+                // ✅ Jika user tidak mengubah tanggal, gunakan tanggal lama
+                if (tanggalInput.Date == tanggalLama.Date)
+                {
+                    tanggalInput = tanggalLama; // Gunakan tanggal lama tanpa perubahan
+                }
+                else
+                {
+                    tanggalInput = DateTime.SpecifyKind(tanggalInput, DateTimeKind.Utc); // Pastikan disimpan dalam UTC
+                }
+
+                int tinggiTomat = int.Parse(Tbtinggi.Text);
+                string kondisiDaun = tbdaun.Text;
+                int kebutuhanAir = int.Parse(tbair.Text);
+                string keterangan = Tbketerangan.Text;
+
+                var update = Builders<BsonDocument>.Update
+                    .Set("tanggal", tanggalInput) // ✅ Pastikan tidak terjadi perubahan waktu
+                    .Set("tinggi_tomat_cm", tinggiTomat)
+                    .Set("kondisi_daun", kondisiDaun)
+                    .Set("kebutuhan_air_ml", kebutuhanAir)
+                    .Set("keterangan", keterangan);
+
+                MongoDBConnection.UpdateDocument("daily_tomato_records", filter, update);
+
+                MessageBox.Show("Data berhasil diperbarui!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                LoadData();
+            }
+            catch (FormatException ex)
+            {
+                MessageBox.Show($"Input tidak valid: {ex.Message}", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
