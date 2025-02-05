@@ -18,6 +18,16 @@ namespace TugasBesarPBO
 
             // Tampilkan username di label
             lblUsersname.Text = $"{username}";
+
+            // Tambahkan opsi ke ComboBox tbdaun
+            tbdaun.Items.Add("Hijau Sehat");
+            tbdaun.Items.Add("Kuning (Kurang Nutrisi)");
+            tbdaun.Items.Add("Coklat Layu");
+            tbdaun.Items.Add("Bercak Coklat / Hitam (Penyakit / Infeksi)");
+            tbdaun.Items.Add("Ujung Daun Kering");
+
+            // Set pilihan default
+            tbdaun.SelectedIndex = 0;
         }
 
         private void btnLogout_Click(object sender, EventArgs e)
@@ -65,10 +75,7 @@ namespace TugasBesarPBO
                 dataGridView1.Rows.Clear();
 
                 var collection = MongoDBConnection.GetCollection("daily_tomato_records");
-
-                // Hanya mengambil data yang dibuat oleh akun yang sedang login
                 var filter = Builders<BsonDocument>.Filter.Eq("created_by", username);
-
                 var documents = collection.Find(filter)
                                           .Sort(Builders<BsonDocument>.Sort.Descending("tanggal"))
                                           .ToList();
@@ -81,7 +88,10 @@ namespace TugasBesarPBO
                     DateTime tanggalRaw = doc.Contains("tanggal") ? doc["tanggal"].ToUniversalTime() : DateTime.UtcNow;
                     string tanggal = tanggalRaw.ToLocalTime().ToString("yyyy-MM-dd");
 
-                    string tinggiTomat = doc.Contains("tinggi_tomat_cm") ? doc["tinggi_tomat_cm"].ToString() : "0";
+                    // ✅ Pastikan tinggi tomat diformat dengan 1 digit desimal
+                    string tinggiTomat = doc.Contains("tinggi_tomat_cm") ?
+                                         Convert.ToDouble(doc["tinggi_tomat_cm"]).ToString("F1") : "0.0";
+
                     string kondisiDaun = doc.Contains("kondisi_daun") ? doc["kondisi_daun"].ToString() : "-";
                     string kebutuhanAir = doc.Contains("kebutuhan_air_ml") ? doc["kebutuhan_air_ml"].ToString() : "0";
                     string keterangan = doc.Contains("keterangan") ? doc["keterangan"].ToString() : "-";
@@ -118,21 +128,39 @@ namespace TugasBesarPBO
                     return;
                 }
 
-                int tinggiTomat = int.Parse(Tbtinggi.Text);
-                int kebutuhanAir = int.Parse(tbair.Text);
+                // ✅ Konversi tinggi tomat ke double dengan format desimal yang tepat
+                double tinggiTomat;
+                if (!double.TryParse(Tbtinggi.Text.Replace(",", "."), out tinggiTomat))
+                {
+                    MessageBox.Show("Tinggi tomat harus berupa angka bulat atau desimal! Contoh: 12.5 cm",
+                                    "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+                // ✅ Format tinggi tomat dengan 1 digit desimal sebelum disimpan
+                tinggiTomat = Math.Round(tinggiTomat, 1);
+
+                // ✅ Konversi kebutuhan air ke bilangan bulat
+                int kebutuhanAir;
+                if (!int.TryParse(tbair.Text, out kebutuhanAir))
+                {
+                    MessageBox.Show("Kebutuhan air harus berupa angka bulat! Contoh: 50 ml",
+                                    "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 string keterangan = Tbketerangan.Text;
                 DateTime tanggal = datetanggal.Value.ToUniversalTime();
-                string kondisiDaun = tbdaun.Text;
+                string kondisiDaun = tbdaun.SelectedItem.ToString(); // Ambil nilai dari ComboBox
 
                 var Datatomat = new BsonDocument
                 {
-                    { "tanggal", tanggal },
-                    { "tinggi_tomat_cm", tinggiTomat },
-                    { "kondisi_daun", kondisiDaun },
-                    { "kebutuhan_air_ml", kebutuhanAir },
-                    { "keterangan", keterangan },
-                    { "created_by", username }, // ✅ Simpan username yang membuat data
-                    { "created_at", DateTime.UtcNow } // ✅ Simpan waktu pembuatan dalam UTC
+                    { "tanggal", datetanggal.Value.ToUniversalTime() },
+                    { "tinggi_tomat_cm", tinggiTomat }, // ✅ Nilai sudah dibulatkan
+                    { "kondisi_daun", tbdaun.SelectedItem.ToString() },
+                    { "kebutuhan_air_ml", int.Parse(tbair.Text) },
+                    { "keterangan", Tbketerangan.Text },
+                    { "created_by", username },
+                    { "created_at", DateTime.UtcNow }
                 };
 
                 usersCollection.InsertOne(Datatomat);
@@ -141,7 +169,7 @@ namespace TugasBesarPBO
 
                 Tbketerangan.Clear();
                 Tbtinggi.Clear();
-                tbdaun.Clear();
+                tbdaun.SelectedIndex = 0;
                 tbair.Clear();
                 tb_id.Clear();
                 datetanggal.Value = DateTime.UtcNow;
@@ -150,7 +178,7 @@ namespace TugasBesarPBO
             }
             catch (FormatException ex)
             {
-                MessageBox.Show($"Input angka tidak valid: {ex.Message}", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Input tidak valid: {ex.Message}", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             catch (Exception ex)
             {
@@ -176,11 +204,22 @@ namespace TugasBesarPBO
                 }
 
                 Tbtinggi.Text = row.Cells["TinggiTomat"].Value?.ToString() ?? "";
-                tbdaun.Text = row.Cells["KondisiDaun"].Value?.ToString() ?? "";
                 tbair.Text = row.Cells["KebutuhanAir"].Value?.ToString() ?? "";
                 Tbketerangan.Text = row.Cells["Keterangan"].Value?.ToString() ?? "";
+
+                // ✅ Set ComboBox tbdaun sesuai dengan data yang diambil
+                string kondisiDaun = row.Cells["KondisiDaun"].Value?.ToString() ?? "Hijau Sehat";
+                if (tbdaun.Items.Contains(kondisiDaun))
+                {
+                    tbdaun.SelectedItem = kondisiDaun;
+                }
+                else
+                {
+                    tbdaun.SelectedIndex = 0; // Jika data tidak cocok, pilih default "Hijau Sehat"
+                }
             }
         }
+
 
         private void btn_delete_Click_1(object sender, EventArgs e)
         {
@@ -201,7 +240,7 @@ namespace TugasBesarPBO
 
                     Tbketerangan.Clear();
                     Tbtinggi.Clear();
-                    tbdaun.Clear();
+                    tbdaun.SelectedIndex = 0;
                     tbair.Clear();
                     tb_id.Clear();
                     datetanggal.Value = DateTime.Now;
@@ -242,29 +281,46 @@ namespace TugasBesarPBO
                     return;
                 }
 
-                // ✅ Ambil tanggal lama dari database dan pastikan tidak berubah jika user tidak mengedit
+                // ✅ Ambil tanggal lama dari database agar tidak berubah
                 DateTime tanggalLama = existingDocument["tanggal"].ToUniversalTime();
-                DateTime tanggalInput = datetanggal.Value; // Nilai dari DateTimePicker
+                DateTime tanggalInput = datetanggal.Value;
 
-                // ✅ Jika user tidak mengubah tanggal, gunakan tanggal lama
                 if (tanggalInput.Date == tanggalLama.Date)
                 {
                     tanggalInput = tanggalLama; // Gunakan tanggal lama tanpa perubahan
                 }
                 else
                 {
-                    tanggalInput = DateTime.SpecifyKind(tanggalInput, DateTimeKind.Utc); // Pastikan disimpan dalam UTC
+                    tanggalInput = DateTime.SpecifyKind(tanggalInput, DateTimeKind.Utc);
                 }
 
-                int tinggiTomat = int.Parse(Tbtinggi.Text);
+                // ✅ Ambil tinggi tomat dari input dan bulatkan ke 1 desimal
+                double tinggiTomat;
+                if (!double.TryParse(Tbtinggi.Text.Replace(",", "."), out tinggiTomat))
+                {
+                    MessageBox.Show("Tinggi tomat harus berupa angka bulat atau desimal! Contoh: 12.5 cm",
+                                    "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
+                tinggiTomat = Math.Round(tinggiTomat, 1); // ✅ Bulatkan ke 1 desimal
+
+                // ✅ Konversi kebutuhan air ke integer
+                int kebutuhanAir;
+                if (!int.TryParse(tbair.Text, out kebutuhanAir))
+                {
+                    MessageBox.Show("Kebutuhan air harus berupa angka bulat! Contoh: 50 ml",
+                                    "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 string kondisiDaun = tbdaun.Text;
-                int kebutuhanAir = int.Parse(tbair.Text);
                 string keterangan = Tbketerangan.Text;
 
                 var update = Builders<BsonDocument>.Update
-                    .Set("tanggal", tanggalInput) // ✅ Pastikan tidak terjadi perubahan waktu
-                    .Set("tinggi_tomat_cm", tinggiTomat)
-                    .Set("kondisi_daun", kondisiDaun)
+                    .Set("tanggal", tanggalInput)
+                    .Set("tinggi_tomat_cm", tinggiTomat) // ✅ Nilai sudah diformat
+                    .Set("kondisi_daun", tbdaun.SelectedItem.ToString())
                     .Set("kebutuhan_air_ml", kebutuhanAir)
                     .Set("keterangan", keterangan);
 
@@ -282,6 +338,12 @@ namespace TugasBesarPBO
             {
                 MessageBox.Show($"Terjadi kesalahan: {ex.Message}", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void linkGoToGrafik_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Form5 grafikForm = new Form5(username);
+            grafikForm.Show();
         }
     }
 }

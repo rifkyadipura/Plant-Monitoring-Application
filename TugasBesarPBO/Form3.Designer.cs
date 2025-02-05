@@ -37,9 +37,7 @@
             panel2 = new Panel();
             lblUsersname = new Label();
             pictureBox1 = new PictureBox();
-            linkGrafik = new LinkLabel();
-            textBox6 = new TextBox();
-            label8 = new Label();
+            linkGoToGrafik = new LinkLabel();
             btn_delete = new Button();
             button4 = new Button();
             dataGridView1 = new DataGridView();
@@ -59,9 +57,9 @@
             label4 = new Label();
             label1 = new Label();
             label3 = new Label();
-            tbdaun = new TextBox();
             tbair = new TextBox();
             tb_id = new TextBox();
+            tbdaun = new ComboBox();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -171,36 +169,20 @@
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
-            // linkGrafik
+            // linkGoToGrafik
             // 
-            linkGrafik.AutoSize = true;
-            linkGrafik.Location = new Point(593, 372);
-            linkGrafik.Name = "linkGrafik";
-            linkGrafik.Size = new Size(124, 15);
-            linkGrafik.TabIndex = 38;
-            linkGrafik.TabStop = true;
-            linkGrafik.Text = "Go to Grafik Analisis?";
-            // 
-            // textBox6
-            // 
-            textBox6.Enabled = false;
-            textBox6.Location = new Point(728, 291);
-            textBox6.Name = "textBox6";
-            textBox6.Size = new Size(150, 23);
-            textBox6.TabIndex = 37;
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Location = new Point(582, 294);
-            label8.Name = "label8";
-            label8.Size = new Size(77, 15);
-            label8.TabIndex = 36;
-            label8.Text = "Nama Dipilih";
+            linkGoToGrafik.AutoSize = true;
+            linkGoToGrafik.Location = new Point(593, 347);
+            linkGoToGrafik.Name = "linkGoToGrafik";
+            linkGoToGrafik.Size = new Size(124, 15);
+            linkGoToGrafik.TabIndex = 38;
+            linkGoToGrafik.TabStop = true;
+            linkGoToGrafik.Text = "Go to Grafik Analisis?";
+            linkGoToGrafik.LinkClicked += linkGoToGrafik_LinkClicked;
             // 
             // btn_delete
             // 
-            btn_delete.Location = new Point(711, 333);
+            btn_delete.Location = new Point(711, 308);
             btn_delete.Name = "btn_delete";
             btn_delete.Size = new Size(112, 34);
             btn_delete.TabIndex = 35;
@@ -210,7 +192,7 @@
             // 
             // button4
             // 
-            button4.Location = new Point(592, 333);
+            button4.Location = new Point(592, 308);
             button4.Name = "button4";
             button4.Size = new Size(112, 34);
             button4.TabIndex = 34;
@@ -288,21 +270,21 @@
             datetanggal.Format = DateTimePickerFormat.Custom;
             datetanggal.Location = new Point(349, 70);
             datetanggal.Name = "datetanggal";
-            datetanggal.Size = new Size(137, 23);
+            datetanggal.Size = new Size(146, 23);
             datetanggal.TabIndex = 31;
             // 
             // Tbtinggi
             // 
             Tbtinggi.Location = new Point(349, 130);
             Tbtinggi.Name = "Tbtinggi";
-            Tbtinggi.Size = new Size(137, 23);
+            Tbtinggi.Size = new Size(146, 23);
             Tbtinggi.TabIndex = 30;
             // 
             // Tbketerangan
             // 
             Tbketerangan.Location = new Point(349, 285);
             Tbketerangan.Name = "Tbketerangan";
-            Tbketerangan.Size = new Size(137, 23);
+            Tbketerangan.Size = new Size(146, 23);
             Tbketerangan.TabIndex = 28;
             // 
             // label7
@@ -358,18 +340,11 @@
             label3.TabIndex = 40;
             label3.Text = "Kebutuhan Air";
             // 
-            // tbdaun
-            // 
-            tbdaun.Location = new Point(349, 189);
-            tbdaun.Name = "tbdaun";
-            tbdaun.Size = new Size(137, 23);
-            tbdaun.TabIndex = 41;
-            // 
             // tbair
             // 
             tbair.Location = new Point(349, 241);
             tbair.Name = "tbair";
-            tbair.Size = new Size(137, 23);
+            tbair.Size = new Size(146, 23);
             tbair.TabIndex = 42;
             // 
             // tb_id
@@ -380,20 +355,26 @@
             tb_id.TabIndex = 43;
             tb_id.Visible = false;
             // 
+            // tbdaun
+            // 
+            tbdaun.FormattingEnabled = true;
+            tbdaun.Location = new Point(349, 189);
+            tbdaun.Name = "tbdaun";
+            tbdaun.Size = new Size(146, 23);
+            tbdaun.TabIndex = 44;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
             ClientSize = new Size(984, 561);
+            Controls.Add(tbdaun);
             Controls.Add(tb_id);
             Controls.Add(tbair);
-            Controls.Add(tbdaun);
             Controls.Add(label3);
             Controls.Add(label1);
-            Controls.Add(linkGrafik);
-            Controls.Add(textBox6);
-            Controls.Add(label8);
+            Controls.Add(linkGoToGrafik);
             Controls.Add(btn_delete);
             Controls.Add(button4);
             Controls.Add(dataGridView1);
@@ -428,9 +409,7 @@
         private Label lblUsersname;
         private Button btnDasboard;
         private Button btnLogout;
-        private LinkLabel linkGrafik;
-        private TextBox textBox6;
-        private Label label8;
+        private LinkLabel linkGoToGrafik;
         private Button btn_delete;
         private Button button4;
         private DataGridView dataGridView1;
@@ -449,7 +428,6 @@
         private DateTimePicker datetanggal;
         private TextBox Tbketerangan;
         private TextBox Tbtinggi;
-        private TextBox tbdaun;
         private TextBox tbair;
         private Panel panel3;
         private Button btnSchedule;
@@ -460,5 +438,6 @@
         private DataGridViewTextBoxColumn Column3;
         private DataGridViewTextBoxColumn Column4;
         private DataGridViewTextBoxColumn Column5;
+        private ComboBox tbdaun;
     }
 }
