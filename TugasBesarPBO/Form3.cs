@@ -3,6 +3,16 @@ using MongoDB.Driver;
 using System;
 using System.Linq;
 using System.Windows.Forms;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Windows.Forms;
+using iText.Kernel.Pdf;
+using iText.Layout;
+using iText.Layout.Element;
+using iText.Kernel.Font;
+using iText.IO.Font.Constants;
+using iText.Layout.Properties;
 
 namespace TugasBesarPBO
 {
@@ -344,6 +354,112 @@ namespace TugasBesarPBO
         {
             Form5 grafikForm = new Form5(username);
             grafikForm.Show();
+        }
+        private void btnExportPdf_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataGridView1.Rows.Count == 0)
+                {
+                    MessageBox.Show("Tidak ada data untuk diekspor!", "Peringatan", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Filter = "PDF Files|*.pdf",
+                    Title = "Simpan sebagai PDF",
+                    FileName = "Laporan_Pertumbuhan_Tanaman_Tomat.pdf"
+                };
+
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
+                {
+                    if (File.Exists(saveFileDialog.FileName))
+                    {
+                        try
+                        {
+                            File.Delete(saveFileDialog.FileName);
+                        }
+                        catch (IOException)
+                        {
+                            MessageBox.Show("File sedang digunakan oleh aplikasi lain. Tutup file sebelum mengekspor.",
+                                            "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+
+                    using (FileStream stream = new FileStream(saveFileDialog.FileName, FileMode.Create, FileAccess.Write, FileShare.None))
+                    using (PdfWriter writer = new PdfWriter(stream))
+                    using (PdfDocument pdf = new PdfDocument(writer))
+                    using (Document document = new Document(pdf))
+                    {
+                        PdfFont boldFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA_BOLD);
+                        PdfFont normalFont = PdfFontFactory.CreateFont(StandardFonts.HELVETICA);
+
+                        // 🔹 Tambahkan Judul PDF
+                        document.Add(new Paragraph("Laporan Pertumbuhan Tanaman Tomat")
+                            .SetFont(boldFont)
+                            .SetFontSize(16)
+                            .SetTextAlignment(TextAlignment.CENTER));
+
+                        document.Add(new Paragraph("\n")); // Spasi
+
+                        // 🔹 Tambahkan "Dibuat oleh" dan "Tanggal Ekspor"
+                        document.Add(new Paragraph($"Dibuat oleh: {username}")
+                            .SetFont(normalFont)
+                            .SetFontSize(10)
+                            .SetTextAlignment(TextAlignment.LEFT));
+
+                        document.Add(new Paragraph($"Tanggal Ekspor: {DateTime.Now:yyyy-MM-dd HH:mm:ss}")
+                            .SetFont(normalFont)
+                            .SetFontSize(10)
+                            .SetTextAlignment(TextAlignment.LEFT));
+
+                        document.Add(new Paragraph("\n")); // Spasi
+
+                        // 🔹 Buat tabel PDF dengan jumlah kolom yang sesuai
+                        Table table = new Table(UnitValue.CreatePercentArray(new float[] { 5, 15, 15, 25, 15, 25 }))
+                            .UseAllAvailableWidth();
+
+                        // 🔹 Tambahkan Header Kolom
+                        string[] headers = { "No.", "Tanggal", "Tinggi Tomat (cm)", "Kondisi Daun", "Kebutuhan Air (ml)", "Keterangan" };
+                        foreach (string header in headers)
+                        {
+                            table.AddHeaderCell(new Cell().Add(new Paragraph(header).SetFont(boldFont).SetTextAlignment(TextAlignment.CENTER)));
+                        }
+
+                        // 🔹 Tambahkan Data dari DataGridView ke PDF
+                        int nomor = 1;
+                        foreach (DataGridViewRow row in dataGridView1.Rows)
+                        {
+                            if (!row.IsNewRow)
+                            {
+                                table.AddCell(new Cell().Add(new Paragraph(nomor.ToString()).SetFont(normalFont).SetTextAlignment(TextAlignment.CENTER)));
+                                table.AddCell(new Cell().Add(new Paragraph(row.Cells["Tanggal"].Value?.ToString() ?? "-").SetFont(normalFont)));
+                                table.AddCell(new Cell().Add(new Paragraph(row.Cells["TinggiTomat"].Value?.ToString() ?? "-").SetFont(normalFont).SetTextAlignment(TextAlignment.CENTER)));
+                                table.AddCell(new Cell().Add(new Paragraph(row.Cells["KondisiDaun"].Value?.ToString() ?? "-").SetFont(normalFont).SetKeepTogether(true)));
+                                table.AddCell(new Cell().Add(new Paragraph(row.Cells["KebutuhanAir"].Value?.ToString() ?? "-").SetFont(normalFont).SetTextAlignment(TextAlignment.CENTER)));
+                                table.AddCell(new Cell().Add(new Paragraph(row.Cells["Keterangan"].Value?.ToString() ?? "-").SetFont(normalFont).SetKeepTogether(true)));
+
+                                nomor++;
+                            }
+                        }
+
+                        document.Add(table);
+                    }
+
+                    MessageBox.Show("Export PDF berhasil!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (IOException ex)
+            {
+                MessageBox.Show($"File sedang digunakan oleh aplikasi lain! Tutup file sebelum mengekspor.\n\nDetail Error: {ex.Message}",
+                                "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Terjadi kesalahan saat ekspor PDF: {ex.Message}", "Kesalahan", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

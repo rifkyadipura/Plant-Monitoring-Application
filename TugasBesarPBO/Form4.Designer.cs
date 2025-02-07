@@ -54,6 +54,7 @@
             panel4 = new Panel();
             label1 = new Label();
             panel5 = new Panel();
+            btnExportSchedulePdf = new Button();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -186,18 +187,19 @@
             // 
             // btnCreateSchedule
             // 
-            btnCreateSchedule.FlatAppearance.BorderSize = 0;
+            btnCreateSchedule.BackColor = Color.FromArgb(24, 30, 54);
+            btnCreateSchedule.FlatAppearance.BorderSize = 2;
             btnCreateSchedule.FlatStyle = FlatStyle.Flat;
             btnCreateSchedule.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             btnCreateSchedule.ForeColor = Color.FromArgb(0, 126, 249);
             btnCreateSchedule.Image = (Image)resources.GetObject("btnCreateSchedule.Image");
-            btnCreateSchedule.Location = new Point(540, 19);
+            btnCreateSchedule.Location = new Point(486, 23);
             btnCreateSchedule.Name = "btnCreateSchedule";
-            btnCreateSchedule.Size = new Size(186, 42);
+            btnCreateSchedule.Size = new Size(134, 38);
             btnCreateSchedule.TabIndex = 1;
             btnCreateSchedule.Text = "Buat Jadwal";
             btnCreateSchedule.TextImageRelation = TextImageRelation.TextBeforeImage;
-            btnCreateSchedule.UseVisualStyleBackColor = true;
+            btnCreateSchedule.UseVisualStyleBackColor = false;
             btnCreateSchedule.Click += btnCreateSchedule_Click;
             // 
             // dataGridViewsSchedule
@@ -351,6 +353,7 @@
             // 
             // panel5
             // 
+            panel5.Controls.Add(btnExportSchedulePdf);
             panel5.Controls.Add(dataGridViewsSchedule);
             panel5.Controls.Add(btnCreateSchedule);
             panel5.Controls.Add(panelModal);
@@ -359,6 +362,23 @@
             panel5.Name = "panel5";
             panel5.Size = new Size(749, 475);
             panel5.TabIndex = 47;
+            // 
+            // btnExportSchedulePdf
+            // 
+            btnExportSchedulePdf.BackColor = Color.FromArgb(24, 30, 54);
+            btnExportSchedulePdf.FlatAppearance.BorderSize = 2;
+            btnExportSchedulePdf.FlatStyle = FlatStyle.Flat;
+            btnExportSchedulePdf.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            btnExportSchedulePdf.ForeColor = Color.FromArgb(0, 126, 249);
+            btnExportSchedulePdf.Image = (Image)resources.GetObject("btnExportSchedulePdf.Image");
+            btnExportSchedulePdf.Location = new Point(625, 23);
+            btnExportSchedulePdf.Name = "btnExportSchedulePdf";
+            btnExportSchedulePdf.Size = new Size(101, 38);
+            btnExportSchedulePdf.TabIndex = 46;
+            btnExportSchedulePdf.Text = "Export";
+            btnExportSchedulePdf.TextImageRelation = TextImageRelation.TextBeforeImage;
+            btnExportSchedulePdf.UseVisualStyleBackColor = false;
+            btnExportSchedulePdf.Click += btnExportSchedulePdf_Click;
             // 
             // Form4
             // 
@@ -414,5 +434,6 @@
         private Label label4;
         private Button btnCloseModal;
         private Panel panel5;
+        private Button btnExportSchedulePdf;
     }
 }

@@ -60,6 +60,7 @@
             tbair = new TextBox();
             tb_id = new TextBox();
             tbdaun = new ComboBox();
+            btnExportPdf = new Button();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             panel2.SuspendLayout();
@@ -363,12 +364,23 @@
             tbdaun.Size = new Size(146, 23);
             tbdaun.TabIndex = 44;
             // 
+            // btnExportPdf
+            // 
+            btnExportPdf.Location = new Point(860, 22);
+            btnExportPdf.Name = "btnExportPdf";
+            btnExportPdf.Size = new Size(112, 34);
+            btnExportPdf.TabIndex = 45;
+            btnExportPdf.Text = "Export PDF";
+            btnExportPdf.UseVisualStyleBackColor = true;
+            btnExportPdf.Click += btnExportPdf_Click;
+            // 
             // Form3
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.FromArgb(46, 51, 73);
             ClientSize = new Size(984, 561);
+            Controls.Add(btnExportPdf);
             Controls.Add(tbdaun);
             Controls.Add(tb_id);
             Controls.Add(tbair);
@@ -439,5 +451,6 @@
         private DataGridViewTextBoxColumn Column4;
         private DataGridViewTextBoxColumn Column5;
         private ComboBox tbdaun;
+        private Button btnExportPdf;
     }
 }
