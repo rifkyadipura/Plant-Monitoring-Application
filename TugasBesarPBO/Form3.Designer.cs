@@ -400,6 +400,7 @@
             Controls.Add(label4);
             Controls.Add(panel1);
             Font = new Font("Segoe UI", 9F, FontStyle.Bold);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form3";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Form3";
