@@ -10,29 +10,20 @@ namespace TugasBesarPBO
         {
             InitializeComponent();
 
-            // Tambahkan placeholder untuk username dan password
             AddPlaceholder(txtUsername, "Masukkan Username");
             AddPlaceholder(txtPassword, "Masukkan Password", isPassword: true);
 
-            // Atur fokus awal ke label atau elemen lain
-            this.ActiveControl = label1; // Pastikan label1 ada di form Anda
-
+            // Atur fokus awal ke label
+            this.ActiveControl = label1; 
             // Tambahkan event untuk show/hide password
             chkShowPassword.CheckedChanged += chkShowPassword_CheckedChanged;
         }
 
         private void AddPlaceholder(TextBox textBox, string placeholderText, bool isPassword = false)
         {
-            // Simpan placeholder pada TextBox.Tag
             textBox.Tag = placeholderText;
-
-            // Atur teks awal sebagai placeholder
             textBox.Text = placeholderText;
-
-            // Warna placeholder
             textBox.ForeColor = Color.Gray;
-
-            // Event untuk menangani fokus masuk
             textBox.GotFocus += (s, e) =>
             {
                 if (textBox.Text == placeholderText)
@@ -65,13 +56,13 @@ namespace TugasBesarPBO
         {
             if (chkShowPassword.Checked)
             {
-                txtPassword.PasswordChar = '\0'; // Tampilkan password
+                txtPassword.PasswordChar = '\0'; 
             }
             else
             {
-                if (txtPassword.Text != (string)txtPassword.Tag) // Jangan aktifkan jika placeholder
+                if (txtPassword.Text != (string)txtPassword.Tag) 
                 {
-                    txtPassword.PasswordChar = '*'; // Sembunyikan password
+                    txtPassword.PasswordChar = '*'; 
                 }
             }
         }
@@ -87,31 +78,24 @@ namespace TugasBesarPBO
         {
             try
             {
-                // Ambil input dari form
                 string username = txtUsername.Text.Trim();
                 string password = txtPassword.Text.Trim();
 
-                // Validasi input kosong
                 if (string.IsNullOrEmpty(username) || string.IsNullOrEmpty(password))
                 {
                     MessageBox.Show("Username dan Password harus diisi.", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                // Hubungkan ke koleksi users
                 var usersCollection = MongoDBConnection.GetCollection("users");
-
-                // Cari pengguna berdasarkan username
                 var user = usersCollection.Find(u => u["username"] == username).FirstOrDefault();
 
-                // Jika pengguna tidak ditemukan
                 if (user == null)
                 {
                     MessageBox.Show("Username tidak ditemukan.", "Login Gagal", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
                 }
 
-                // Validasi password
                 string hashedPassword = user["hashed_password"].AsString;
                 if (!VerifyPassword(password, hashedPassword))
                 {
@@ -119,19 +103,16 @@ namespace TugasBesarPBO
                     return;
                 }
 
-                // Login berhasil
                 MessageBox.Show("Login berhasil!", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                 // Ambil data jadwal hari ini dari koleksi schedules
                 var schedulesCollection = MongoDBConnection.GetCollection("schedules");
-
-                // Dapatkan nama hari saat ini dalam format Bahasa Indonesia
                 string today = DateTime.Now.ToString("dddd", new System.Globalization.CultureInfo("id-ID"));
 
                 // Filter untuk mengambil jadwal yang dibuat oleh pengguna yang login
                 var filter = Builders<BsonDocument>.Filter.And(
-                    Builders<BsonDocument>.Filter.Eq("hari", today), // Filter berdasarkan hari
-                    Builders<BsonDocument>.Filter.Eq("created_by", username) // Filter berdasarkan akun yang login
+                    Builders<BsonDocument>.Filter.Eq("hari", today), 
+                    Builders<BsonDocument>.Filter.Eq("created_by", username) 
                 );
 
                 // Ambil jadwal berdasarkan hari ini dan username
@@ -151,7 +132,7 @@ namespace TugasBesarPBO
                 }
 
                 // Arahkan ke Form3 (dashboard)
-                Form3 formDashboard = new Form3(username); // Kirim username
+                Form3 formDashboard = new Form3(username);
                 formDashboard.Show();
                 this.Hide();
             }

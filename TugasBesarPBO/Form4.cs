@@ -92,14 +92,18 @@ namespace TugasBesarPBO
 
                 var schedulesCollection = MongoDBConnection.GetCollection("schedules");
 
-                // Cek apakah hari sudah dijadwalkan
-                var existingSchedule = schedulesCollection.Find(new BsonDocument { { "hari", hari } }).FirstOrDefault();
+                // Cek apakah hari sudah dijadwalkan oleh user yang sedang login
+                var filter = Builders<BsonDocument>.Filter.And(
+                    Builders<BsonDocument>.Filter.Eq("hari", hari),
+                    Builders<BsonDocument>.Filter.Eq("created_by", username) // Hanya cek jadwal yang dibuat oleh user yang login
+                );
+                var existingSchedule = schedulesCollection.Find(filter).FirstOrDefault();
 
                 if (selectedScheduleId == null) // Jika Create
                 {
                     if (existingSchedule != null)
                     {
-                        MessageBox.Show("Hari ini sudah dijadwalkan. Silakan pilih hari lain.", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Hari ini sudah dijadwalkan oleh Anda. Silakan pilih hari lain.", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
@@ -117,21 +121,21 @@ namespace TugasBesarPBO
                 }
                 else // Jika Update
                 {
-                    // Validasi agar tidak bisa mengubah ke hari lain yang sudah ada
+                    // Validasi agar tidak bisa mengubah ke hari lain yang sudah ada untuk user yang login
                     if (existingSchedule != null && existingSchedule["_id"].ToString() != selectedScheduleId)
                     {
-                        MessageBox.Show("Hari ini sudah dijadwalkan. Silakan pilih hari lain.", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show("Hari ini sudah dijadwalkan oleh Anda. Silakan pilih hari lain.", "Kesalahan Input", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
-                    var filter = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(selectedScheduleId));
+                    var filterUpdate = Builders<BsonDocument>.Filter.Eq("_id", ObjectId.Parse(selectedScheduleId));
                     var update = Builders<BsonDocument>.Update
                         .Set("hari", hari)
                         .Set("aktivitas", aktivitas)
                         .Set("jumlah_pelaksanaan", jumlahPelaksanaan)
                         .Set("keterangan", keterangan)
                         .Set("updated_at", DateTime.UtcNow);
-                    schedulesCollection.UpdateOne(filter, update);
+                    schedulesCollection.UpdateOne(filterUpdate, update);
                     MessageBox.Show("Jadwal berhasil diperbarui.", "Sukses", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 

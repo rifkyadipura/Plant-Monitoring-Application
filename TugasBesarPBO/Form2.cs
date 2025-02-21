@@ -19,30 +19,21 @@ namespace TugasBesarPBO
         {
             InitializeComponent();
 
-            // Tambahkan placeholder ke setiap TextBox
             AddPlaceholder(txtFullName, "Masukkan Nama Lengkap");
             AddPlaceholder(txtUsername, "Masukkan Username");
             AddPlaceholder(txtEmail, "Masukkan Email");
             AddPlaceholder(txtPassword, "Masukkan Password", isPassword: true);
 
-            // Atur fokus awal ke label atau elemen lain
-            this.ActiveControl = label1; // Pastikan label1 ada di form Anda
+            this.ActiveControl = label1; 
 
             chkShowPassword.CheckedChanged += chkShowPassword_CheckedChanged;
         }
 
         private void AddPlaceholder(TextBox textBox, string placeholderText, bool isPassword = false)
         {
-            // Simpan placeholder pada TextBox.Tag
             textBox.Tag = placeholderText;
-
-            // Atur teks awal sebagai placeholder
             textBox.Text = placeholderText;
-
-            // Warna placeholder
             textBox.ForeColor = Color.Gray;
-
-            // Event untuk menangani fokus masuk
             textBox.GotFocus += (s, e) =>
             {
                 if (textBox.Text == placeholderText)
@@ -74,13 +65,13 @@ namespace TugasBesarPBO
         {
             if (chkShowPassword.Checked)
             {
-                txtPassword.PasswordChar = '\0'; // Tampilkan password
+                txtPassword.PasswordChar = '\0'; 
             }
             else
             {
-                if (txtPassword.Text != (string)txtPassword.Tag) // Jangan aktifkan jika placeholder
+                if (txtPassword.Text != (string)txtPassword.Tag) 
                 {
-                    txtPassword.PasswordChar = '*'; // Sembunyikan password
+                    txtPassword.PasswordChar = '*'; 
                 }
             }
         }
