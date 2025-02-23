@@ -86,7 +86,7 @@
             btnSchedule.FlatAppearance.BorderSize = 0;
             btnSchedule.FlatStyle = FlatStyle.Flat;
             btnSchedule.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnSchedule.ForeColor = Color.FromArgb(0, 126, 249);
+            btnSchedule.ForeColor = Color.White;
             btnSchedule.Image = (Image)resources.GetObject("btnSchedule.Image");
             btnSchedule.Location = new Point(-1, 197);
             btnSchedule.Name = "btnSchedule";
@@ -111,7 +111,7 @@
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnLogout.ForeColor = Color.FromArgb(0, 126, 249);
+            btnLogout.ForeColor = Color.White;
             btnLogout.Image = (Image)resources.GetObject("btnLogout.Image");
             btnLogout.Location = new Point(-3, 12);
             btnLogout.Name = "btnLogout";
@@ -127,7 +127,7 @@
             btnDasboard.FlatAppearance.BorderSize = 0;
             btnDasboard.FlatStyle = FlatStyle.Flat;
             btnDasboard.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDasboard.ForeColor = Color.FromArgb(0, 126, 249);
+            btnDasboard.ForeColor = Color.White;
             btnDasboard.Image = (Image)resources.GetObject("btnDasboard.Image");
             btnDasboard.Location = new Point(-1, 148);
             btnDasboard.Name = "btnDasboard";
@@ -152,7 +152,7 @@
             // 
             lblUsersname.AutoSize = true;
             lblUsersname.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUsersname.ForeColor = Color.FromArgb(0, 126, 249);
+            lblUsersname.ForeColor = Color.White;
             lblUsersname.Location = new Point(47, 93);
             lblUsersname.Name = "lblUsersname";
             lblUsersname.Size = new Size(85, 16);
@@ -291,6 +291,7 @@
             // label7
             // 
             label7.AutoSize = true;
+            label7.ForeColor = SystemColors.Control;
             label7.Location = new Point(192, 130);
             label7.Name = "label7";
             label7.Size = new Size(79, 15);
@@ -308,6 +309,7 @@
             // label5
             // 
             label5.AutoSize = true;
+            label5.ForeColor = SystemColors.Control;
             label5.Location = new Point(192, 75);
             label5.Name = "label5";
             label5.Size = new Size(49, 15);
@@ -317,6 +319,7 @@
             // label4
             // 
             label4.AutoSize = true;
+            label4.ForeColor = SystemColors.Control;
             label4.Location = new Point(192, 291);
             label4.Name = "label4";
             label4.Size = new Size(72, 15);
@@ -326,6 +329,7 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.ForeColor = SystemColors.Control;
             label1.Location = new Point(196, 195);
             label1.Name = "label1";
             label1.Size = new Size(79, 15);
@@ -335,6 +339,7 @@
             // label3
             // 
             label3.AutoSize = true;
+            label3.ForeColor = SystemColors.Control;
             label3.Location = new Point(192, 241);
             label3.Name = "label3";
             label3.Size = new Size(87, 15);

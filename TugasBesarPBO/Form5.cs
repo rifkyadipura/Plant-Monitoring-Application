@@ -2,12 +2,9 @@
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Windows.Forms.DataVisualization.Charting;
 
@@ -23,6 +20,7 @@ namespace TugasBesarPBO
             this.username = username;
             LoadChartData();
         }
+
         private void LoadChartData()
         {
             try
@@ -69,39 +67,13 @@ namespace TugasBesarPBO
                 };
                 chart1.Series.Add(tinggiSeries);
 
-                // 🔹 Series 2: Kondisi Daun (Garis Hijau)
-                Series kondisiSeries = new Series("Kondisi Daun")
-                {
-                    ChartType = SeriesChartType.Line,
-                    XValueType = ChartValueType.Date,
-                    BorderWidth = 2,
-                    Color = Color.Green,
-                    Legend = "Legenda",
-                    ChartArea = "MainChart"
-                };
-                chart1.Series.Add(kondisiSeries);
-
-                // 🔹 Mapping kondisi daun ke angka
-                Dictionary<string, int> kondisiMapping = new Dictionary<string, int>
-                {
-                    { "Hijau Sehat", 5 },
-                    { "Kuning (Kurang Nutrisi)", 4 },
-                    { "Coklat Layu", 3 },
-                    { "Bercak Coklat / Hitam (Penyakit / Infeksi)", 2 },
-                    { "Ujung Daun Kering", 1 }
-                };
-
                 // 🔹 Tambahkan Data ke Chart
                 foreach (var doc in documents)
                 {
                     DateTime tanggal = doc["tanggal"].ToUniversalTime();
                     double tinggiTomat = doc.Contains("tinggi_tomat_cm") ? Convert.ToDouble(doc["tinggi_tomat_cm"]) : 0;
-                    string kondisiDaun = doc.Contains("kondisi_daun") ? doc["kondisi_daun"].ToString() : "Hijau Sehat";
-
-                    int kondisiValue = kondisiMapping.ContainsKey(kondisiDaun) ? kondisiMapping[kondisiDaun] : 1;
 
                     tinggiSeries.Points.AddXY(tanggal, tinggiTomat);
-                    kondisiSeries.Points.AddXY(tanggal, kondisiValue);
                 }
 
                 // 🔹 Format Sumbu X agar Tanggal Terlihat Jelas
@@ -110,11 +82,11 @@ namespace TugasBesarPBO
                 chart1.ChartAreas[0].AxisX.Interval = 1;
 
                 // 🔹 Judul Sumbu
-                chart1.ChartAreas[0].AxisY.Title = "Tinggi Tomat (cm) & Kondisi Daun";
+                chart1.ChartAreas[0].AxisY.Title = "Tinggi Tomat (cm)";
                 chart1.ChartAreas[0].AxisX.Title = "Tanggal";
 
                 // 🔹 Tambahkan Judul Grafik
-                chart1.Titles.Add("Grafik Perkembangan Tinggi dan Kondisi Tanaman Tomat");
+                chart1.Titles.Add("Grafik Perkembangan Tinggi Tanaman Tomat");
 
             }
             catch (Exception ex)

@@ -80,7 +80,7 @@
             btnLogout.FlatAppearance.BorderSize = 0;
             btnLogout.FlatStyle = FlatStyle.Flat;
             btnLogout.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnLogout.ForeColor = Color.FromArgb(0, 126, 249);
+            btnLogout.ForeColor = Color.White;
             btnLogout.Image = (Image)resources.GetObject("btnLogout.Image");
             btnLogout.Location = new Point(-3, 12);
             btnLogout.Name = "btnLogout";
@@ -109,7 +109,7 @@
             btnSchedule.FlatAppearance.BorderSize = 0;
             btnSchedule.FlatStyle = FlatStyle.Flat;
             btnSchedule.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnSchedule.ForeColor = Color.FromArgb(0, 126, 249);
+            btnSchedule.ForeColor = Color.White;
             btnSchedule.Image = (Image)resources.GetObject("btnSchedule.Image");
             btnSchedule.Location = new Point(-1, 197);
             btnSchedule.Name = "btnSchedule";
@@ -125,7 +125,7 @@
             btnDasboard.FlatAppearance.BorderSize = 0;
             btnDasboard.FlatStyle = FlatStyle.Flat;
             btnDasboard.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnDasboard.ForeColor = Color.FromArgb(0, 126, 249);
+            btnDasboard.ForeColor = Color.White;
             btnDasboard.Image = (Image)resources.GetObject("btnDasboard.Image");
             btnDasboard.Location = new Point(-1, 148);
             btnDasboard.Name = "btnDasboard";
@@ -150,7 +150,7 @@
             // 
             lblUsersname.AutoSize = true;
             lblUsersname.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            lblUsersname.ForeColor = Color.FromArgb(0, 126, 249);
+            lblUsersname.ForeColor = Color.White;
             lblUsersname.Location = new Point(47, 93);
             lblUsersname.Name = "lblUsersname";
             lblUsersname.Size = new Size(85, 16);
@@ -174,7 +174,7 @@
             btnSaveSchedule.FlatAppearance.BorderSize = 0;
             btnSaveSchedule.FlatStyle = FlatStyle.Flat;
             btnSaveSchedule.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnSaveSchedule.ForeColor = Color.FromArgb(0, 126, 249);
+            btnSaveSchedule.ForeColor = Color.White;
             btnSaveSchedule.Image = (Image)resources.GetObject("btnSaveSchedule.Image");
             btnSaveSchedule.Location = new Point(120, 235);
             btnSaveSchedule.Name = "btnSaveSchedule";
@@ -191,7 +191,7 @@
             btnCreateSchedule.FlatAppearance.BorderSize = 2;
             btnCreateSchedule.FlatStyle = FlatStyle.Flat;
             btnCreateSchedule.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnCreateSchedule.ForeColor = Color.FromArgb(0, 126, 249);
+            btnCreateSchedule.ForeColor = Color.White;
             btnCreateSchedule.Image = (Image)resources.GetObject("btnCreateSchedule.Image");
             btnCreateSchedule.Location = new Point(486, 23);
             btnCreateSchedule.Name = "btnCreateSchedule";
@@ -250,7 +250,7 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.ForeColor = Color.FromArgb(0, 126, 249);
+            label6.ForeColor = Color.White;
             label6.Location = new Point(5, 174);
             label6.Name = "label6";
             label6.Size = new Size(83, 18);
@@ -261,7 +261,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.ForeColor = Color.FromArgb(0, 126, 249);
+            label5.ForeColor = Color.White;
             label5.Location = new Point(5, 134);
             label5.Name = "label5";
             label5.Size = new Size(145, 18);
@@ -272,7 +272,7 @@
             // 
             label4.AutoSize = true;
             label4.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label4.ForeColor = Color.FromArgb(0, 126, 249);
+            label4.ForeColor = Color.White;
             label4.Location = new Point(5, 92);
             label4.Name = "label4";
             label4.Size = new Size(62, 18);
@@ -283,7 +283,7 @@
             // 
             label3.AutoSize = true;
             label3.Font = new Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label3.ForeColor = Color.FromArgb(0, 126, 249);
+            label3.ForeColor = Color.White;
             label3.Location = new Point(5, 59);
             label3.Name = "label3";
             label3.Size = new Size(35, 18);
@@ -294,7 +294,7 @@
             // 
             label2.AutoSize = true;
             label2.Font = new Font("Microsoft Sans Serif", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label2.ForeColor = Color.FromArgb(0, 126, 249);
+            label2.ForeColor = Color.White;
             label2.Location = new Point(68, 15);
             label2.Name = "label2";
             label2.Size = new Size(191, 24);
@@ -344,7 +344,7 @@
             // 
             label1.AutoSize = true;
             label1.Font = new Font("Microsoft Sans Serif", 27.75F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
-            label1.ForeColor = Color.FromArgb(0, 126, 249);
+            label1.ForeColor = Color.White;
             label1.Location = new Point(231, 25);
             label1.Name = "label1";
             label1.Size = new Size(340, 42);
@@ -369,7 +369,7 @@
             btnExportSchedulePdf.FlatAppearance.BorderSize = 2;
             btnExportSchedulePdf.FlatStyle = FlatStyle.Flat;
             btnExportSchedulePdf.Font = new Font("Microsoft Sans Serif", 9.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            btnExportSchedulePdf.ForeColor = Color.FromArgb(0, 126, 249);
+            btnExportSchedulePdf.ForeColor = Color.White;
             btnExportSchedulePdf.Image = (Image)resources.GetObject("btnExportSchedulePdf.Image");
             btnExportSchedulePdf.Location = new Point(625, 23);
             btnExportSchedulePdf.Name = "btnExportSchedulePdf";
