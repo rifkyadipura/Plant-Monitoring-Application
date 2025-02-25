@@ -408,7 +408,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form3";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form3";
+            Text = "Dashboard Monitoring";
             panel1.ResumeLayout(false);
             panel3.ResumeLayout(false);
             panel2.ResumeLayout(false);

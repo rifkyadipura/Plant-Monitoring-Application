@@ -254,7 +254,7 @@
             MinimizeBox = false;
             Name = "Form2";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form2";
+            Text = "Sign Up";
             Load += Form2_Load;
             panel2.ResumeLayout(false);
             panel2.PerformLayout();

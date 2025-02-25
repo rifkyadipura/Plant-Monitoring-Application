@@ -62,7 +62,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form5";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form5";
+            Text = "Grafik";
             ((System.ComponentModel.ISupportInitialize)chart1).EndInit();
             ResumeLayout(false);
         }

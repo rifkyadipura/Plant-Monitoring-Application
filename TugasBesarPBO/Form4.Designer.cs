@@ -392,7 +392,7 @@
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "Form4";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Form4";
+            Text = "Jadwal Perawatan";
             panel3.ResumeLayout(false);
             panel1.ResumeLayout(false);
             panel2.ResumeLayout(false);
